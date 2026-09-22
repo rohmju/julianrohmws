@@ -1,0 +1,28 @@
+Julian Rohm 
+
+
+Skills: 
+3+ Jears experience in agentic Coding 
+-Scrum Master Psm1
+-Java Grundlagen
+- frontend developer 3+ Jahre Erfahrung 
+- Experience in Building Ai Agents
+-Cybersecurity Basics
+-Google Cloud Basics
+- terraform Basics
+
+Projekts
+-Fps shooter game
+- online Chat app 
+- Agentic Chat AI with database behind 
+- todo App
+- Pick n Pack app mitgeareitet
+- 
+
+
+Abteilungen 
+- Cybersec
+- Data Platform
+- PicknPack App
+- Agile & Enterprise Architecture
+- Mystore

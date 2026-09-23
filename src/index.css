@@ -1,52 +1,66 @@
+/* ---------- Tokens (Claude light / dark) ---------- */
 :root {
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  --bg-000: #ffffff;
+  --bg-100: #faf9f5;
+  --bg-200: #f5f4ed;
+  --bg-300: #f0eee6;
+  --text-100: #141413;
+  --text-200: #3d3d3a;
+  --text-400: #73726c;
+  --text-500: #73726c;
+  --border-rgb: 31 30 29;
+  --hover: rgb(31 30 29 / 0.05);
+  --accent-brand: #d97757;
+  --accent-main: #c96442;
+  --accent-main-hover: #b4583a;
+  --on-accent: #ffffff;
+  --composer-shadow: 0 0.25rem 1.25rem rgb(0 0 0 / 0.035);
+  --composer-shadow-focus: 0 0.25rem 1.25rem rgb(0 0 0 / 0.075);
+
+  --font-sans: "anthropicSans", "Styrene B", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "anthropicSerif", "Copernicus", "Tiempos Headline", "Newsreader", ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --font-pixel: "Press Start 2P", ui-monospace, Consolas, monospace;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-000: #30302e;
+    --bg-100: #262624;
+    --bg-200: #1f1e1d;
+    --bg-300: #141413;
+    --text-100: #faf9f5;
+    --text-200: #c3c0b6;
+    --text-400: #9c9a92;
+    --text-500: #9c9a92;
+    --border-rgb: 222 220 209;
+    --hover: rgb(222 220 209 / 0.06);
+    --accent-main: #d97757;
+    --accent-main-hover: #c96442;
+    --composer-shadow: 0 0.25rem 1.25rem rgb(0 0 0 / 0.12);
+    --composer-shadow-focus: 0 0.25rem 1.25rem rgb(0 0 0 / 0.22);
+  }
 }
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  background: var(--bg-100);
+  scrollbar-width: none; /* the page scrolls, but Claude shows no scrollbar */
+  overscroll-behavior-y: none;
+}
+html::-webkit-scrollbar { display: none; }
 
 body {
   margin: 0;
-  display: flex;
-  min-width: 320px;
-  min-height: 100vh;
+  background: var(--bg-100);
+  color: var(--text-100);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-#root {
-  width: 100%;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-
-button:hover {
-  border-color: #646cff;
-}
-
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
+button { font: inherit; color: inherit; }

@@ -1,0 +1,46 @@
+{
+  "$comment": "Content for the WANTED posters on the Projects board, in board order (left to right). Empty fields render as placeholders on the poster. image: path under /public (e.g. /projects/vision-memory.jpg), shown on the front. link.url: opens in a new tab from the button on the back.",
+  "projects": [
+    {
+      "id": "vision-memory",
+      "title": "Vision Memory",
+      "image": "",
+      "description": "",
+      "techStack": [],
+      "link": { "label": "Visit project", "url": "" }
+    },
+    {
+      "id": "fps-chess",
+      "title": "FPS Chess",
+      "image": "",
+      "description": "",
+      "techStack": [],
+      "link": { "label": "Visit project", "url": "" }
+    },
+    {
+      "id": "chat-app",
+      "title": "Chat App",
+      "image": "",
+      "description": "",
+      "techStack": [],
+      "link": { "label": "Visit project", "url": "" }
+    },
+    {
+      "id": "agentic-chat-ai",
+      "title": "Agentic Chat AI",
+      "image": "",
+      "description": "",
+      "techStack": [],
+      "link": { "label": "Visit project", "url": "" }
+    },
+    {
+      "id": "unknown",
+      "title": "Unknown",
+      "mystery": true,
+      "image": "",
+      "description": "",
+      "techStack": [],
+      "link": { "label": "Visit project", "url": "" }
+    }
+  ]
+}

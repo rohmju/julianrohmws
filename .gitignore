@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Higgsfield downloads, anchor stills and 4K intermediates (large; only the manifest is tracked).
+# The web outputs in public/videos are committed; re-encode them with
+#   npm run generate:videos -- --only=encode
+assets/generated/*
+!assets/generated/manifest.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

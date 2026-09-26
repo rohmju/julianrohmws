@@ -1,0 +1,129 @@
+{
+  "jobs": {
+    "frame-idle": {
+      "endpoint": "marketing-studio/image",
+      "request_id": "47580de0-71f1-4247-9b04-ee6e115a69c4",
+      "status_url": "https://platform.higgsfield.ai/requests/47580de0-71f1-4247-9b04-ee6e115a69c4/status",
+      "status": "completed",
+      "submitted_at": "2026-09-25T16:17:30.886Z",
+      "input": {
+        "prompt": "Outpaint this photograph to a wider 16:9 frame. The flat grey areas on the left and right\nare empty canvas: fill them so the photo continues seamlessly — the dim photo studio beyond the\nmottled blue canvas backdrop, deep black studio curtains falling into shadow at the far sides, and\nthe same grey concrete floor with its soft pool of light continuing to the left and right.\nKeep everything that is already in the photo exactly as it is: do not change the young man, his pose,\nface, hair, clothing or shoes, and do not change the backdrop, the lighting, the colors or the grain.\nSame camera, same lens, same exposure, same film grain. Photorealistic. No new people, no objects,\nno text, no logos.",
+        "image_urls": [
+          "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/3d9013a2-745e-40f7-bfd9-3cbf84dd0c1f.png"
+        ],
+        "aspect_ratio": "16:9",
+        "resolution": "4k",
+        "quality": "high",
+        "enhance_prompt": false
+      },
+      "output": "https://d3u0tzju9qaucj.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/d34d67c7-2970-4c8c-a7de-7a8e05762328.png",
+      "file": "assets/generated/raw/frame-idle-outpaint.png"
+    },
+    "frame-board": {
+      "endpoint": "marketing-studio/image",
+      "request_id": "cef51b92-ce8f-47df-9fc2-d648645a9e69",
+      "status_url": "https://platform.higgsfield.ai/requests/cef51b92-ce8f-47df-9fc2-d648645a9e69/status",
+      "status": "completed",
+      "submitted_at": "2026-09-25T16:19:19.527Z",
+      "input": {
+        "prompt": "Photorealistic still frame from the same film as the reference photo: the same dim photo\nstudio, the same cool blue-grey color grade, the same soft key light, the same subtle film grain and\ngentle vignette. The camera is now very close to and perfectly frontal to a large old black\nchalkboard that hangs behind where the mottled backdrop was. The matte black slate fills almost the\nentire 16:9 frame edge to edge; only a thin strip of its weathered dark wooden frame is visible\nalong all four edges of the image. The slate is empty — no writing, no drawings — with a faint haze\nof erased chalk, soft chalk-dust smudges, a few old nail holes and fine scratches, and a soft pool\nof light in the center falling off to darker corners. Straight-on orthogonal view, no perspective\ntilt, level horizon, sharp focus across the whole board. No people, no hands, no text, no posters,\nno objects in front of the board.",
+        "image_urls": [
+          "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/c1e960a6-579c-4856-a54c-904f3b56789a.png"
+        ],
+        "aspect_ratio": "16:9",
+        "resolution": "4k",
+        "quality": "high",
+        "enhance_prompt": false
+      },
+      "output": "https://d3u0tzju9qaucj.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/47886d75-89e5-4f22-9792-0a8847832e89.png",
+      "file": "assets/generated/raw/frame-board.png"
+    },
+    "idle": {
+      "endpoint": "kling-video/v3.0/4k/image-to-video",
+      "request_id": "86b078b6-88b0-4db1-8312-10137750277a",
+      "status_url": "https://platform.higgsfield.ai/requests/86b078b6-88b0-4db1-8312-10137750277a/status",
+      "status": "completed",
+      "submitted_at": "2026-09-25T16:27:26.229Z",
+      "input": {
+        "prompt": "Locked-off static camera, no camera movement at all. Photorealistic cinematic footage in a dim\nphoto studio with a cool blue-grey grade and fine film grain. The young man stands still with his\narms crossed, looking calmly into the lens. Only very subtle, natural motion: slow calm breathing\ngently lifts his chest and shoulders, a single soft blink, a barely visible weight shift. Fine dust\nparticles drift slowly through the light. The mottled backdrop fabric ripples very slightly. The\nstudio light flickers almost imperceptibly. He does not uncross his arms, does not walk, does not\nspeak and does not change his expression. The final frame is identical to the first frame.",
+        "image_url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/205eb47e-d2b9-4605-9621-fe6764094c1e.png",
+        "last_image_url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/205eb47e-d2b9-4605-9621-fe6764094c1e.png",
+        "duration": 4,
+        "sound": "off"
+      },
+      "output": "https://d3u0tzju9qaucj.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/0d7f11a6-4f11-49a2-bee5-3559ffc85f38.mp4"
+    },
+    "return": {
+      "endpoint": "kling-video/v3.0/4k/image-to-video",
+      "request_id": "2e5f9f61-a9b5-420e-8aa1-d8410fc58fbe",
+      "status_url": "https://platform.higgsfield.ai/requests/2e5f9f61-a9b5-420e-8aa1-d8410fc58fbe/status",
+      "status": "completed",
+      "submitted_at": "2026-09-25T16:27:26.317Z",
+      "input": {
+        "prompt": "One continuous shot, photorealistic and cinematic, in a dim photo studio with a cool blue-grey\ngrade and fine film grain. The shot starts close and frontal on an empty black chalkboard. The\nhandheld camera pulls back smoothly and steadily away from the board; the young man carries it back\nand sets it down on its original spot, and the camera settles completely still. He walks to the\nside, picks up the mottled blue canvas backdrop cloth from the floor and hangs it back up so that it\nfully covers the chalkboard again, smoothing it into its original place. He walks back to the\ncenter in front of the backdrop, turns to face the camera and crosses his arms, ending in exactly\nthe original pose: standing centered, arms crossed, looking calmly into the lens.",
+        "image_url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/13bc2b91-cf02-42ee-8769-6ff6ba919472.png",
+        "last_image_url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/205eb47e-d2b9-4605-9621-fe6764094c1e.png",
+        "duration": 8,
+        "sound": "off"
+      },
+      "output": "https://d3u0tzju9qaucj.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/1d5ddf2a-1039-4ab7-b42a-c8dd7996961e.mp4"
+    },
+    "reveal": {
+      "endpoint": "kling-video/v3.0/4k/image-to-video",
+      "request_id": "3a0999d7-b349-435f-b270-890d529257bb",
+      "status_url": "https://platform.higgsfield.ai/requests/3a0999d7-b349-435f-b270-890d529257bb/status",
+      "status": "completed",
+      "submitted_at": "2026-09-25T16:27:26.331Z",
+      "input": {
+        "prompt": "One continuous shot, photorealistic and cinematic, in a dim photo studio with a cool blue-grey\ngrade and fine film grain. The young man uncrosses his arms, turns around to the mottled blue canvas\nbackdrop behind him, reaches up with both hands, grabs its top edge and pulls the heavy cloth down in\none smooth motion. He gathers the fallen cloth and lays it aside on the floor to the left, revealing\na large empty black chalkboard that was hanging behind it. He walks back toward the camera, takes\nhold of the camera with both hands and carries it forward, handheld and steady, straight toward the\nchalkboard until the black slate fills the whole frame, perfectly frontal and centered. The man is\nnow out of frame and the camera comes to rest, still.",
+        "image_url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/205eb47e-d2b9-4605-9621-fe6764094c1e.png",
+        "last_image_url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/13bc2b91-cf02-42ee-8769-6ff6ba919472.png",
+        "duration": 8,
+        "sound": "off"
+      },
+      "output": "https://d3u0tzju9qaucj.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/a499e1fc-fa89-4521-9733-be9f0fc65c6d.mp4"
+    },
+    "reveal-b": {
+      "endpoint": "kling-video/v3.0/4k/image-to-video",
+      "request_id": "af53fae6-dfd6-45c5-8908-2a3b6aa682ce",
+      "status_url": "https://platform.higgsfield.ai/requests/af53fae6-dfd6-45c5-8908-2a3b6aa682ce/status",
+      "status": "completed",
+      "submitted_at": "2026-09-26T11:18:31.982Z",
+      "input": {
+        "prompt": "One continuous shot, photorealistic and cinematic, in a dim photo studio with a cool\nblue-grey grade and fine film grain. There is exactly one person in the scene: the young man\nstanding in front of the large empty black chalkboard, looking into the lens. He walks straight up\nto the camera, reaches out with both hands and grips it; the view jolts slightly as he lifts it and\nhe steps around behind it, out of view. Now carried by him, handheld and steady, the camera glides\nsmoothly forward toward the chalkboard until the empty black slate fills the whole frame, perfectly\nfrontal and centered, and comes to rest, still. Only this one person ever appears: no second person,\nno duplicate, no reflection of him.",
+        "image_url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/fe6a8096-2866-4b4d-a58e-359985f1e10b.png",
+        "last_image_url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/68d050da-bfc1-4017-b2b8-ce161b36c6b6.png",
+        "duration": 5,
+        "sound": "off"
+      },
+      "output": "https://d3u0tzju9qaucj.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/847b3f38-d353-4335-aa25-9388d91a0a74.mp4"
+    }
+  },
+  "uploads": {
+    "91193f146fec8a6707a49e65058997456cd07c796563c5a33660084e5c44d23b": {
+      "file": "assets\\generated\\outpaint-input.png",
+      "url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/3d9013a2-745e-40f7-bfd9-3cbf84dd0c1f.png",
+      "at": 1790353050752
+    },
+    "8adb807cc8dd71ffcb0cd48f825f44223f4a6a89130c169ea6d15432efda1c2f": {
+      "file": "assets\\generated\\frame-idle.png",
+      "url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/c1e960a6-579c-4856-a54c-904f3b56789a.png",
+      "at": 1790353159400
+    },
+    "fe45d675b03440b18c4d674533087bff830d8f90590ade3b1a13d7a5a0b74e32": {
+      "file": "assets\\generated\\frame-idle.png",
+      "url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/032bb497-7ac9-45ce-a5e9-83633c0a2506.png",
+      "at": 1790421270137
+    },
+    "3cb8195127b5401dba5a90bab95de8a5868fbcce9f99264f477ffd26048d8eda": {
+      "file": "assets\\generated\\frame-board.png",
+      "url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/68d050da-bfc1-4017-b2b8-ce161b36c6b6.png",
+      "at": 1790421273314
+    },
+    "4948d0c08099bf74c6b2e18571f4f60ef1066719b084d890d19268e6ed234ba2": {
+      "file": "assets\\generated\\reveal-b-start.png",
+      "url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/fe6a8096-2866-4b4d-a58e-359985f1e10b.png",
+      "at": 1790421511841
+    }
+  }
+}

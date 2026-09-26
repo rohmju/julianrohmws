@@ -5,7 +5,18 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="color-scheme" content="light dark" />
-    <title>Demo</title>
+    <title>Julian Rohm — Portfolio</title>
+    <meta name="description" content="Julian Rohm — frontend developer building AI agents. Projects, departments and skills." />
+    <meta name="theme-color" content="#0b0c0e" />
+    <!-- The portfolio at "/" is dark; paint it dark before any CSS or JS arrives (no white flash). -->
+    <script>
+      if (location.pathname === '/') document.documentElement.classList.add('pf-dark')
+    </script>
+    <style>
+      html.pf-dark, html.pf-dark body { background: #0b0c0e !important; }
+    </style>
+    <link rel="preload" as="image" href="/videos/idle-poster-landscape.jpg" media="(min-aspect-ratio: 1/1)" fetchpriority="high" />
+    <link rel="preload" as="image" href="/videos/idle-poster-portrait.jpg" media="(max-aspect-ratio: 1/1)" fetchpriority="high" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400&family=Press+Start+2P&display=swap" />

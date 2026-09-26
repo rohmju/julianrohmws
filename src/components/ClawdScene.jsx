@@ -10,7 +10,9 @@ const MIN_ROWS = 44
 const SEND_OFF_VH = 600 // scroll distance over which the whole crew jumps away
 const HINT_SEGMENTS = 20
 const CRANE_SCALE = 0.3 // the crane scene uses a finer grid, so everything in it draws at ~30% size
-const MAX_BOOST = 0.5 // scrolling down speeds the crane scene up by at most 50%
+const CRANE_DURATION = 5 // seconds the whole crane sequence should take, wall-clock
+const CRANE_SPEED = CRANE_END / CRANE_DURATION // uniform playback speed-up to hit that target
+const MAX_BOOST = 0.5 // scrolling down speeds the crane scene up by at most 50% on top of that
 const BOOST_HOLD = 0.35 // seconds the boost lingers after the last scroll input
 const CREW_GONE = 0.995 // scroll progress at which the last Clawd is off-screen
 
@@ -168,8 +170,8 @@ export default function ClawdScene() {
         setCraneOn(true)
       }
       if (craneStart !== null) {
-        // Capped at 1.5×, however hard the user scrolls.
-        craneClock += dt * (1 + (s < boostUntil ? MAX_BOOST : 0))
+        // Sped up to fit CRANE_DURATION, plus up to 50% more however hard the user scrolls.
+        craneClock += dt * CRANE_SPEED * (1 + (s < boostUntil ? MAX_BOOST : 0))
         const cf = Math.floor(craneClock * FPS)
         if (cf !== lastFrame) {
           lastFrame = cf

@@ -1,0 +1,8 @@
+# Never upload secrets, generation sources or private photos to Vercel.
+.env*
+assets/
+scripts/
+Julian/
+index.ts
+promt.txt
+notes.txt

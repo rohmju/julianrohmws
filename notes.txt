@@ -7,8 +7,8 @@ Skills:
 -Java Grundlagen
 - frontend developer 3+ Jahre Erfahrung 
 - Experience in Building Ai Agents
--Cybersecurity Basics
--Google Cloud Basics
+- Cybersecurity Basics
+- Google Cloud Basics
 - terraform Basics
 
 Projekts

@@ -1,18 +1,21 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
-import Composer from './components/Composer.jsx'
-import IconButton from './components/IconButton.jsx'
-import { GhostIcon, MenuIcon, Spark } from './components/Icons.jsx'
-import ScrollHint from './components/ScrollHint.jsx'
-import Sidebar from './components/Sidebar.jsx'
-import SuggestionChips from './components/SuggestionChips.jsx'
-import { useScrollTyping } from './hooks/useScrollTyping.js'
-import { prefersReducedMotion } from './lib/motion.js'
-import './App.css'
+import Composer from '../components/Composer.jsx'
+import IconButton from '../components/IconButton.jsx'
+import { GhostIcon, MenuIcon, Spark } from '../components/Icons.jsx'
+import ScrollHint from '../components/ScrollHint.jsx'
+import Sidebar from '../components/Sidebar.jsx'
+import SuggestionChips from '../components/SuggestionChips.jsx'
+import ClawdScene from '../components/ClawdScene.jsx'
+import { useScrollTyping } from '../hooks/useScrollTyping.js'
+import { prefersReducedMotion } from '../lib/motion.js'
+import './ClaudeHome.css'
 
 const TARGET = 'yo claude make a website about myself make no mistake'
 const PX_PER_CHAR = 30 // scroll distance that reveals one character
 
-function App({ onExit }) {
+// The Julian-facing "type to build" screen. Scrolling reveals a fixed
+// prompt; sending it wipes to white and hands off to ClawdScene.
+function TypingScreen({ onExit }) {
   const [wipeOrigin, setWipeOrigin] = useState(null)
   const [nudge, setNudge] = useState(0)
   const submitted = wipeOrigin !== null
@@ -54,7 +57,7 @@ function App({ onExit }) {
   }, [bump])
 
   // White circle grows out of the send button; once it covers the screen,
-  // onExit clears the whole document.
+  // onExit hands off to the Clawd scene.
   useLayoutEffect(() => {
     if (!wipeOrigin) return
     const { x, y, radius } = wipeOrigin
@@ -140,4 +143,16 @@ function App({ onExit }) {
   )
 }
 
-export default App
+// The "claude" section: opening typing screen, then the Clawd scene once
+// the prompt is sent. Lives at /home.
+export default function ClaudeHome() {
+  const [showClawd, setShowClawd] = useState(false)
+
+  useEffect(() => {
+    if (!showClawd) return
+    window.scrollTo(0, 0)
+  }, [showClawd])
+
+  if (showClawd) return <ClawdScene />
+  return <TypingScreen onExit={() => setShowClawd(true)} />
+}

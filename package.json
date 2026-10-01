@@ -18,8 +18,7 @@
     "@higgsfield/client": "^0.2.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^7.18.4",
-    "three": "^0.180.0"
+    "react-router-dom": "^7.18.4"
   },
   "devDependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",

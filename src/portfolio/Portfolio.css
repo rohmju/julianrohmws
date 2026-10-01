@@ -174,449 +174,118 @@
   to { opacity: 1; translate: 0 0; }
 }
 
-/* The two choices float over the right side of the frame (the figure stands at ~44–57%). */
-.pf-choices { display: contents; }
+/* ---------- Open PC ---------- */
 
-/* Projects sits on the left edge; Departments takes the slot Projects used to hold. */
-.pf-choices__left,
-.pf-choices__right {
+/* Below the figure, centred, so the man in the middle of the frame stays clear. */
+.pf-open-wrap {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-}
-/* Mirrored offsets so both tags sit the same distance from the centred character. */
-.pf-choices__left {
-  left: calc(clamp(24px, 9vw, 190px) + clamp(128px, 11.2vw, 196px) + clamp(22px, 2.8vw, 52px));
-}
-.pf-choices__right {
-  right: calc(clamp(24px, 9vw, 190px) + clamp(128px, 11.2vw, 196px) + clamp(22px, 2.8vw, 52px));
-}
-
-.pf-choices__left > .pf-tag { --float-dur: 6.8s; --float-delay: -1.2s; animation-delay: 1.15s; }
-.pf-choices__right > .pf-tag { --float-dur: 7.6s; --float-delay: -4.1s; animation-delay: 1.35s; }
-
-.pf-skills {
-  position: absolute;
-  top: 0;
-  right: clamp(22px, 3.4vw, 64px);
-  padding-top: clamp(40px, 7vh, 72px);
-}
-
-/* The Skills tag hangs from a string off the top edge. */
-.pf-skills::before {
-  content: '';
-  position: absolute;
-  top: 0;
   left: 50%;
-  width: 2px;
-  height: calc(clamp(40px, 7vh, 72px) + 4px);
-  margin-left: -1px;
-  background: linear-gradient(to bottom, rgba(138, 115, 80, 0.2), var(--twine));
-  transform-origin: 50% 0;
-  animation: pf-sway 5.4s var(--ease-in-out) infinite alternate;
+  bottom: calc(clamp(28px, 9vh, 110px) + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  animation: pf-open-float 6.8s var(--ease-in-out) -1.2s infinite alternate;
 }
 
-.pf-skills .pf-tag {
-  --float-dur: 5.4s;
-  animation-delay: 1.5s;
-}
-.pf-skills .pf-tag__body {
-  transform-origin: 50% -30%;
-  animation-name: pf-sway;
-}
-.pf-skills .pf-tag__twine { display: none; }
-
-@keyframes pf-sway {
-  from { transform: rotate(-2.2deg); }
-  to { transform: rotate(2deg); }
-}
-
-/* ---------- Paper tag ---------- */
-
-.pf-tag {
+/* An aged, letterpressed sign board. */
+.pf-open {
   --lift: 0px;
-  --tilt: 0deg;
   position: relative;
   display: block;
-  padding: 0;
+  padding: 0.42em 1.25em 0.5em;
   border: 0;
-  background: none;
+  border-radius: 3px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 120% 140% at 40% 30%, #cbb48a 0%, #b09671 55%, #7e6545 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(52, 32, 14, 0.55),
+    inset 0 0 0 7px rgba(201, 179, 138, 0.35),
+    inset 0 0 0 8px rgba(52, 32, 14, 0.4),
+    inset 0 0 26px rgba(52, 32, 14, 0.55),
+    0 18px 30px rgba(0, 0, 0, 0.5),
+    0 4px 8px rgba(0, 0, 0, 0.45);
   color: var(--ink);
-  font: inherit;
-  cursor: pointer;
-  aspect-ratio: 2 / 3;
-  container-type: inline-size;
-  outline: none;
-  filter: drop-shadow(0 16px 20px rgba(0, 0, 0, 0.5)) drop-shadow(0 3px 5px rgba(0, 0, 0, 0.45));
-  transform: translateY(var(--lift)) rotate(var(--tilt));
-  transition:
-    transform 700ms var(--ease-out),
-    filter 700ms var(--ease-out);
-  /* backwards: the entrance never holds opacity/translate once it has finished. */
-  animation: pf-rise 1.4s var(--ease-out) backwards;
-}
-
-.pf-tag--large { width: clamp(128px, 11.2vw, 196px); }
-.pf-tag--small { width: clamp(80px, 6.4vw, 108px); }
-
-.pf-tag__body {
-  position: absolute;
-  inset: 0;
-  display: block;
-  transform-origin: 50% 9%;
-  animation: pf-float var(--float-dur, 7s) var(--ease-in-out) var(--float-delay, 0s) infinite alternate;
-}
-
-@keyframes pf-float {
-  from { transform: translateY(0) rotate(-1.6deg); }
-  to { transform: translateY(-10px) rotate(1.3deg); }
-}
-
-.pf-tag__paper {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.pf-tag__twine {
-  position: absolute;
-  left: 34%;
-  top: -17%;
-  width: 32%;
-  pointer-events: none;
-}
-
-.pf-tag__text {
-  position: absolute;
-  left: 4.5%;
-  right: 4.5%;
-  top: 25%;
-  bottom: 38%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.pf-tag__kicker {
-  font-family: var(--font-caps);
-  font-size: 0.7em;
-  letter-spacing: 0.2em;
-  opacity: 0.7;
-}
-
-.pf-tag__label {
   font-family: var(--font-display);
-  /* Sized to the tag itself so the longest word ("Departments") always fits. */
-  font-size: 11.4cqw;
+  font-size: clamp(30px, 3.6vw, 60px);
   line-height: 1.1;
-  letter-spacing: 0.01em;
-  color: var(--ink);
-  /* Letterpress: ink sits into the card. */
-  text-shadow: 0 1px 0 rgba(236, 222, 190, 0.28);
-  opacity: 0.88;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  outline: none;
+  transform: translateY(var(--lift));
+  transition: transform 600ms var(--ease-out), box-shadow 600ms var(--ease-out), filter 600ms var(--ease-out);
+  /* backwards: the entrance never holds opacity/translate once it has finished. */
+  animation: pf-rise 1.4s var(--ease-out) 1.15s backwards;
 }
 
-.pf-tag--small .pf-tag__label { font-size: 15cqw; }
-
-.pf-tag__seal {
-  position: absolute;
-  left: 27%;
-  width: 46%;
-  bottom: 6%;
-  transform: rotate(-8deg);
-  transition: transform 500ms var(--ease-out), filter 500ms var(--ease-out);
-  filter: drop-shadow(0 2px 2px rgba(20, 0, 0, 0.5));
-}
-
-.pf-tag--small .pf-tag__seal { width: 50%; left: 25%; }
-
-.pf-tag__seal svg { display: block; width: 100%; overflow: visible; }
-
-.pf-tag__seal-mark {
-  font-family: var(--font-display);
-  font-size: 34px;
-  fill: rgba(40, 6, 4, 0.62);
-}
-
-.pf-tag__progress {
-  fill: none;
-  stroke: var(--bone);
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-dasharray: 1;
-  stroke-dashoffset: var(--from, 1);
-  transform: rotate(-90deg);
-  transform-origin: 50px 51px;
+.pf-open__label {
+  position: relative;
+  display: block;
+  white-space: nowrap;
+  /* Letterpress: ink sits into the board. */
+  text-shadow: 0 1px 0 rgba(236, 222, 190, 0.3);
   opacity: 0.9;
-  animation-name: pf-seal-progress;
+}
+
+@keyframes pf-open-float {
+  from { translate: 0 0; }
+  to { translate: 0 -8px; }
+}
+
+@media (hover: hover) {
+  .pf-open:hover {
+    --lift: -6px;
+    filter: brightness(1.06);
+  }
+}
+
+.pf-open:focus-visible {
+  --lift: -6px;
+  filter: drop-shadow(0 0 0.5px var(--bone)) drop-shadow(0 0 8px rgba(234, 223, 198, 0.6));
+}
+
+.pf-open:active,
+.pf-open.is-pressed {
+  --lift: 3px;
+  filter: brightness(0.94);
+  transition-duration: 180ms;
+}
+
+.pf-open.is-pressed { cursor: progress; }
+
+/* Fills from `--from` to full over the rest of the idle loop. */
+.pf-open__progress {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(53, 9, 10, 0.75);
+  transform-origin: 0 50%;
+  transform: scaleX(var(--from, 0));
+  animation-name: pf-open-progress;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
 }
 
-@keyframes pf-seal-progress {
-  to { stroke-dashoffset: 0; }
-}
-
-@media (hover: hover) {
-  .pf-tag:hover {
-    --lift: -12px;
-    --tilt: 0.6deg;
-    filter: drop-shadow(0 30px 34px rgba(0, 0, 0, 0.42)) drop-shadow(0 6px 10px rgba(0, 0, 0, 0.4));
-  }
-  .pf-tag:hover .pf-tag__seal {
-    transform: rotate(-3deg) scale(1.05);
-    filter: drop-shadow(0 3px 3px rgba(20, 0, 0, 0.55)) brightness(1.12);
-  }
-}
-
-.pf-tag:focus-visible {
-  --lift: -12px;
-}
-.pf-tag:focus-visible .pf-tag__paper {
-  filter: drop-shadow(0 0 0.5px var(--bone)) drop-shadow(0 0 6px rgba(234, 223, 198, 0.55));
-}
-
-.pf-tag:active,
-.pf-tag.is-pressed {
-  --lift: 3px;
-  --tilt: 0deg;
-  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.55)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
-  transition-duration: 180ms;
-}
-
-.pf-tag:active .pf-tag__seal,
-.pf-tag.is-pressed .pf-tag__seal {
-  transform: rotate(-8deg) scale(0.92);
-  filter: drop-shadow(0 1px 1px rgba(20, 0, 0, 0.6)) brightness(0.88);
-}
-
-.pf-tag.is-pressed { cursor: progress; }
-
-.pf-tag[aria-disabled='true'] { cursor: default; }
-.pf-tag:disabled { cursor: default; }
-
-/* ---------- Board ---------- */
-
-.pf-board {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 800ms var(--ease-in-out);
-}
-
-.pf-board.is-visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.pf-board__host,
-.pf-board__gl {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-.pf-back {
-  position: absolute;
-  top: clamp(14px, 3vh, 34px);
-  left: clamp(16px, 2.6vw, 44px);
-  z-index: 11;
-  --float-dur: 6.2s;
-  transition: opacity 500ms var(--ease-in-out), transform 700ms var(--ease-out), filter 700ms var(--ease-out);
-}
-.pf-board:not(.is-board) .pf-back {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* Inspection overlay: ornamental corners framing the poster. */
-.pf-board__frame {
-  position: absolute;
-  inset: clamp(14px, 3vw, 40px);
-  z-index: 10;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 600ms var(--ease-in-out);
-}
-.pf-board.is-inspect .pf-board__frame { opacity: 1; }
-.pf-board__frame span {
-  position: absolute;
-  width: clamp(28px, 4vw, 56px);
-  height: clamp(28px, 4vw, 56px);
-  border: 1px solid rgba(234, 223, 198, 0.45);
-}
-.pf-board__frame span::after {
-  content: '';
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  background: rgba(234, 223, 198, 0.55);
-  transform: rotate(45deg);
-}
-.pf-board__frame span:nth-child(1) { top: 0; left: 0; border-right: 0; border-bottom: 0; }
-.pf-board__frame span:nth-child(2) { top: 0; right: 0; border-left: 0; border-bottom: 0; }
-.pf-board__frame span:nth-child(3) { bottom: 0; left: 0; border-right: 0; border-top: 0; }
-.pf-board__frame span:nth-child(4) { bottom: 0; right: 0; border-left: 0; border-top: 0; }
-.pf-board__frame span:nth-child(1)::after { top: 6px; left: 6px; }
-.pf-board__frame span:nth-child(2)::after { top: 6px; right: 6px; }
-.pf-board__frame span:nth-child(3)::after { bottom: 6px; left: 6px; }
-.pf-board__frame span:nth-child(4)::after { bottom: 6px; right: 6px; }
-
-.pf-hint {
-  position: absolute;
-  left: 50%;
-  bottom: calc(clamp(18px, 3.6vh, 40px) + env(safe-area-inset-bottom, 0px));
-  z-index: 11;
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.2em 0;
-  width: max-content;
-  max-width: calc(100vw - 32px);
-  font-family: var(--font-caps);
-  font-size: clamp(13px, 1vw, 16px);
-  letter-spacing: 0.16em;
-  color: var(--bone-dim);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
-  transform: translateX(-50%);
-  transition: opacity 600ms var(--ease-in-out);
-  animation: pf-hint-in 900ms var(--ease-out) backwards;
-  pointer-events: none;
-}
-.pf-hint.is-hidden { opacity: 0; }
-.pf-hint.is-nudged { animation: pf-nudge 700ms var(--ease-out); }
-
-.pf-hint__star {
-  display: inline-block;
-  margin: 0 0.9em;
-  font-size: 0.7em;
-  opacity: 0.6;
-  transform: translateY(-0.15em);
-}
-
-@keyframes pf-hint-in {
-  from { opacity: 0; transform: translate(-50%, 8px); }
-  to { opacity: 1; transform: translate(-50%, 0); }
-}
-
-@keyframes pf-nudge {
-  0% { transform: translateX(-50%); color: var(--bone-dim); }
-  25% { transform: translateX(calc(-50% - 5px)); color: var(--bone); }
-  50% { transform: translateX(calc(-50% + 4px)); }
-  75% { transform: translateX(calc(-50% - 2px)); }
-  100% { transform: translateX(-50%); color: var(--bone-dim); }
-}
-
-/* Hold-progress ring, positioned at the pointer. */
-.pf-hold {
-  position: absolute;
-  left: -40px;
-  top: -40px;
-  width: 80px;
-  height: 80px;
-  z-index: 12;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 160ms linear;
-}
-.pf-hold[data-visible='true'] { opacity: 1; }
-.pf-hold svg { width: 100%; height: 100%; overflow: visible; }
-.pf-hold__track,
-.pf-hold__fill {
-  fill: none;
-  stroke-width: 2.5;
-}
-.pf-hold__track { stroke: rgba(234, 223, 198, 0.22); fill: rgba(11, 12, 14, 0.18); }
-.pf-hold__fill {
-  stroke: var(--bone);
-  stroke-linecap: round;
-  stroke-dasharray: 1;
-  stroke-dashoffset: calc(1 - var(--progress, 0));
-  transform: rotate(-90deg);
-  transform-origin: 40px 40px;
-  filter: drop-shadow(0 0 4px rgba(234, 223, 198, 0.45));
-}
-.pf-hold__label {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  display: none;
-  margin-top: 4px;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  font-family: var(--font-caps);
-  font-size: 13px;
-  letter-spacing: 0.18em;
-  color: var(--bone);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
-}
-.pf-hold[data-mode='inspect'] .pf-hold__label--inspect,
-.pf-hold[data-mode='back'] .pf-hold__label--back { display: block; }
-
-.pf-board__failed {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 11;
-  max-width: min(420px, calc(100vw - 48px));
-  margin: 0;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  font-size: 18px;
-  color: var(--bone);
-}
-
-.pf-sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-  border: 0;
+@keyframes pf-open-progress {
+  to { transform: scaleX(1); }
 }
 
 /* ---------- Portrait / phones ---------- */
 
 @media (max-aspect-ratio: 1/1) {
-  /* Bottom corners, so the figure in the middle of the frame stays clear. */
-  .pf-choices__left,
-  .pf-choices__right {
-    top: auto;
-    bottom: calc(clamp(14px, 3.5vh, 40px) + env(safe-area-inset-bottom, 0px));
-    transform: none;
-  }
-  .pf-choices__left { left: 14px; }
-  .pf-choices__right { right: 14px; }
-  .pf-choices__right > .pf-tag { margin-bottom: 4vh; }
-  .pf-tag--large { width: clamp(104px, 29vw, 150px); }
-  .pf-tag--small { width: clamp(68px, 18vw, 92px); }
-  .pf-skills { padding-top: clamp(30px, 5vh, 56px); }
-  .pf-skills::before { height: calc(clamp(30px, 5vh, 56px) + 4px); }
+  .pf-open { font-size: clamp(28px, 9vw, 44px); }
 }
 
 /* ---------- Reduced motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {
   .pf-root::after { animation-duration: 0.6s; }
-  .pf-tag,
+  .pf-open,
+  .pf-open-wrap,
   .pf-mark,
-  .pf-hint { animation: none; }
-  .pf-tag__body,
-  .pf-skills::before,
   .pf-film__grain { animation: none; }
-  .pf-tag__progress { animation: none; stroke-dashoffset: 0; }
+  .pf-open__progress { animation: none; transform: scaleX(1); }
   .pf-start { transition: opacity 400ms linear; }
   .pf-start.is-hidden { transform: none; }
 }

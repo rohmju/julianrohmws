@@ -1,5 +1,5 @@
 {
-  "$comment": "What the Ask Julian chatbot on the Windows 95 desktop knows about Julian beyond the departments (departments.json) and the Projects board (projects.json). Everything here is sent to Gemini as context, so only put in what visitors may know. Empty fields are left out.",
+  "$comment": "What the Ask Julian chatbot on the Windows 95 desktop knows about Julian beyond the departments (departments.json) and the Projects board (projects.json). Everything here is sent to Gemini as context, so only put in what visitors may know. Empty fields are left out. The same fields make up Resume.doc on the desktop; email is where 'Contact Julian' (Dial-Up Networking) sends messages and is printed on the CV.",
   "name": "Julian Rohm",
   "about": "",
   "skills": [
@@ -20,5 +20,6 @@
     "Worked on the Pick n Pack app",
     "This portfolio website, including the Windows 95 desktop and this chatbot"
   ],
-  "contact": ""
+  "contact": "",
+  "email": ""
 }

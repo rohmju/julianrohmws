@@ -3,6 +3,7 @@ import Icon from '../icons.jsx'
 
 const PRODUCTS = {
   Notepad: { icon: 'notepad' },
+  WordPad: { icon: 'wordpad' },
   Minesweeper: { icon: 'minesweeper', credit: 'by Robert Donner and Curt Johnson' },
   'Internet Explorer': { icon: 'ie' },
   'Ask Julian': { icon: 'chat', credit: 'powered by Google Gemini' },

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useReducer, useRef, u
 import '@fontsource/vt323/400.css'
 import './win95.css'
 import departmentsData from '../data/departments.json'
+import profile from '../data/profile.json'
 import { APPS, iconOf, titleOf } from './apps/index.js'
 import DesktopIcons from './components/DesktopIcons.jsx'
 import { ContextMenu } from './components/MenuBar.jsx'
@@ -14,6 +15,7 @@ import { cursorVariables } from './cursors.js'
 import { gridSize, layoutIcons, nearestFreeCell } from './desktopGrid.js'
 import { buildFileSystem } from './fileSystem.js'
 import { screenScale, useDesktopScale } from './scale.js'
+import { playStartup } from './sounds.js'
 
 const TASKBAR_HEIGHT = 28
 const COMPACT_WIDTH = 640 // narrower screens open resizable windows maximized
@@ -96,7 +98,7 @@ function manage(state, action) {
 // after the start-up screen), boots, and after Start → Shut Down ends black again and calls
 // onShutDown so the portfolio can play its way back.
 export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDown }) {
-  const fs = useMemo(() => buildFileSystem(departmentsData.departments), [])
+  const fs = useMemo(() => buildFileSystem(departmentsData.departments, profile), [])
   const [stage, setStage] = useState('black')
   const [wm, dispatch] = useReducer(manage, NO_WINDOWS)
   const [selected, setSelected] = useState(null)
@@ -133,6 +135,14 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
     const timer = setTimeout(() => (next ? setStage(next) : latest.current.onShutDown?.()), duration)
     return () => clearTimeout(timer)
   }, [stage, reducedMotion, iconCount])
+
+  // The start-up sound plays as the desktop appears, after every boot and log-on. It is left to
+  // finish across the following stages and only stopped when the desktop goes away.
+  const stopSound = useRef(() => {})
+  useEffect(() => {
+    if (stage === 'loading') stopSound.current = playStartup()
+  }, [stage])
+  useEffect(() => () => stopSound.current(), [])
 
   // Once the desktop is up: keyboard focus moves onto it, and a pending program starts.
   useEffect(() => {
@@ -179,16 +189,22 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
     const message = (props) => open('message', props)
     const run = (app, options = {}) => {
       if (app === 'explorer') return openNode(fs.myComputer)
+      if (app === 'wordpad') return openNode(fs.resume) // the only document on this computer
       if (app === 'notepad') return open('notepad', {}, options) // every Notepad is a new window
       return open(app, {}, { key: app, ...options })
     }
+    const remember = (node) => setRecent((list) => [node, ...list.filter((n) => n.id !== node.id)].slice(0, 10))
     const openNode = (node) => {
       switch (node.type) {
         case 'folder':
           return open('folder', { node, color: node.color }, { key: `folder:${node.id}` })
         case 'file':
-          setRecent((list) => [node, ...list.filter((n) => n.id !== node.id)].slice(0, 10))
+          remember(node)
           return open('notepad', { name: node.name, text: node.text, color: node.color }, { key: `file:${node.id}` })
+        case 'document':
+          // The desktop shortcut and the file in My Documents share one window.
+          remember(fs.resume)
+          return open('wordpad', { name: node.name, blocks: node.blocks }, { key: `document:${node.name}` })
         case 'link':
           return open('browser', { url: node.url }, { key: `link:${node.id}` })
         case 'app':
@@ -212,6 +228,14 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
         iexplore: 'browser',
         askjulian: 'chat',
         chat: 'chat',
+        wordpad: 'wordpad',
+        write: 'wordpad',
+        find: 'find',
+        sysdm: 'sysprops',
+        'sysdm.cpl': 'sysprops',
+        rasphone: 'dialup',
+        dialup: 'dialup',
+        contact: 'dialup',
       }
       if (programs[name]) return run(programs[name])
       // "iexplore <address>" or a web address on its own opens a new browser window.
@@ -249,6 +273,7 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
     }
     return {
       ...shared,
+      fs,
       open,
       openNode,
       run,
@@ -281,11 +306,14 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
             icon: 'programs',
             submenu: [
               { label: 'Games', icon: 'programs', submenu: [{ label: 'Minesweeper', icon: 'minesweeper', onSelect: () => api.run('minesweeper') }] },
+              { label: 'Dial-Up Networking', icon: 'dialup', onSelect: () => api.run('dialup') },
               { label: 'Notepad', icon: 'notepad', onSelect: () => api.run('notepad') },
+              { label: 'WordPad', icon: 'wordpad', onSelect: () => api.run('wordpad') },
             ],
           },
           { label: 'StartUp', icon: 'programs', submenu: [{ label: '(Empty)', disabled: true }] },
           { label: 'Ask Julian', icon: 'chat', onSelect: () => api.run('chat') },
+          { label: 'Contact Julian', icon: 'dialup', onSelect: () => api.run('dialup') },
           { label: 'Internet Explorer', icon: 'ie', onSelect: () => api.run('browser') },
           { label: 'MS-DOS Prompt', icon: 'dos', onSelect: () => api.run('dos') },
           { label: 'Windows Explorer', icon: 'explorer', onSelect: () => api.run('explorer') },
@@ -295,7 +323,7 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
         label: '&Documents',
         icon: 'documents',
         submenu: recent.length
-          ? recent.map((node) => ({ label: node.path ?? node.name, icon: 'text', onSelect: () => api.openNode(node) }))
+          ? recent.map((node) => ({ label: node.path ?? node.name, icon: node.icon === 'wordpad' ? 'wordpad' : 'text', onSelect: () => api.openNode(node) }))
           : [{ label: '(Empty)', disabled: true }],
       },
       {
@@ -311,7 +339,7 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
         label: '&Find',
         icon: 'find',
         submenu: [
-          { label: '&Files or Folders...', icon: 'find', onSelect: () => api.notAvailable('Find') },
+          { label: '&Files or Folders...', icon: 'find', onSelect: () => api.run('find') },
           { label: '&Computer...', icon: 'computer', onSelect: () => api.notAvailable('Find Computer') },
         ],
       },

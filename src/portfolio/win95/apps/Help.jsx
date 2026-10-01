@@ -12,6 +12,18 @@ export default function Help() {
           <h2>Welcome to Julian&rsquo;s departments</h2>
           <p>This computer holds the departments Julian Rohm has worked in, one folder each.</p>
 
+          <h3>To read or download Julian&rsquo;s CV</h3>
+          <ul>
+            <li>{open} Resume.doc on the desktop.</li>
+            <li>In WordPad, click Print, and choose &ldquo;Save as PDF&rdquo; to keep a copy.</li>
+          </ul>
+
+          <h3>To get in touch</h3>
+          <p>{open} Contact Julian on the desktop, type your message, and click Connect.</p>
+
+          <h3>To find something</h3>
+          <p>Click Start, point to Find, and click Files or Folders. Type a skill or a department, such as Terraform.</p>
+
           <h3>To open a department</h3>
           <ul>
             <li>{open} its folder on the desktop.</li>

@@ -3,7 +3,7 @@ import Icon from '../icons.jsx'
 
 // An icon with its label, on the desktop or in a folder window. A click selects it and a double
 // click (or Enter) opens it; on touch screens a tap opens it straight away. Delete, or Delete in
-// its right-click menu, tries to delete it.
+// its right-click menu, tries to delete it. Properties opens the program in node.properties.
 export default function DesktopIcon({ node, selected, small = false, onSelect, onOpen, style }) {
   const { api, coarsePointer } = useWin95()
   return (
@@ -30,7 +30,7 @@ export default function DesktopIcon({ node, selected, small = false, onSelect, o
           { label: '&Delete', onSelect: () => api.remove(node) },
           { label: 'Rena&me', disabled: true },
           '-',
-          { label: 'P&roperties', disabled: true },
+          { label: 'P&roperties', disabled: !node.properties, onSelect: () => api.run(node.properties) },
         ])
       }}
     >

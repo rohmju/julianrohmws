@@ -26,7 +26,7 @@ const ABOUT = [
   profile.skills?.length && `## Skills\n${list(profile.skills)}`,
   profile.projects?.length && `## Projects\n${list(profile.projects)}`,
   board.length && `## Projects on the portfolio's Projects board\n${list(board)}`,
-  profile.contact && `## Contact\n${profile.contact}`,
+  (profile.contact || profile.email) && `## Contact\n${[profile.contact, profile.email && `E-mail: ${profile.email} (or the "Contact Julian" icon on the desktop)`].filter(Boolean).join('\n')}`,
   `## Training departments\nJulian is doing his training in rotating departments. Each one has four report files: info and grades, tasks, the trainer's feedback, and Julian's feedback to the department. Grades go from 4 (very good) to 1 (urgent need for improvement). "(coming soon)" means that part isn't filled in yet.\n\n${departmentFiles}`,
 ]
   .filter(Boolean)

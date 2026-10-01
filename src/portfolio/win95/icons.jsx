@@ -114,6 +114,31 @@ const LARGE = {
       <path fill={G} d="M9 12h14v1H9zM9 15h14v1H9zM9 18h14v1H9zM9 21h14v1H9zM9 24h10v1H9z" />
     </>
   ),
+  // WordPad and its documents: a page with a blue heading and a pencil.
+  wordpad: () => (
+    <>
+      {page}
+      <path fill={B} d="M9 6h8v3H9z" />
+      <path fill={G} d="M9 12h14v1H9zM9 15h14v1H9zM9 18h10v1H9zM9 21h8v1H9z" />
+      <path fill={K} d="M14 27l11-11 4 4-11 11h-4z" />
+      <path fill={Y} d="M15 27l10-10 3 3-10 10h-3z" />
+      <path fill={K} d="M14 28h2v2h-2z" />
+    </>
+  ),
+  // Dial-Up Networking: a computer and a telephone.
+  dialup: () => (
+    <>
+      <path fill={K} d="M2 2h18v14H2z" />
+      <path fill={S} d="M3 3h16v12H3z" />
+      <path fill={W} d="M3 3h16v1H4v11H3z" />
+      <path fill={T} d="M5 5h12v8H5z" />
+      <path fill={K} d="M7 16h8v2H7zM4 18h14v3H4z" />
+      <path fill={S} d="M5 19h12v1H5z" />
+      <path fill={K} d="M13 20h18v3H13zM13 23h4v2h-4zM27 23h4v2h-4zM17 24h10v7H17z" />
+      <path fill={S} d="M18 25h8v5h-8z" />
+      <path fill={K} d="M19 26h1v1h-1zM21 26h1v1h-1zM23 26h1v1h-1zM19 28h1v1h-1zM21 28h1v1h-1zM23 28h1v1h-1z" />
+    </>
+  ),
   computer: () => computer(T),
   shutdown: () => computer('#101828'),
   network: () => (
@@ -476,6 +501,24 @@ const SMALL = {
       <path fill={A} d="M4 3h8v2H4z" />
       <path fill={K} d="M5 1h1v3H5zM8 1h1v3H8zM11 1h1v3h-1z" />
       <path fill={G} d="M5 7h6v1H5zM5 9h6v1H5zM5 11h6v1H5z" />
+    </>
+  ),
+  wordpad: () => (
+    <>
+      <path fill={K} d="M2 1h7l3 3v11H2z" />
+      <path fill={W} d="M3 2h5v3h3v9H3z" />
+      <path fill={B} d="M4 3h3v2H4z" />
+      <path fill={G} d="M4 7h6v1H4zM4 9h5v1H4zM4 11h3v1H4z" />
+      <path fill={K} d="M8 14l6-6 2 2-6 6H8z" />
+      <path fill={Y} d="M9 14l5-5 1 1-5 5H9z" />
+    </>
+  ),
+  dialup: () => (
+    <>
+      <path fill={K} d="M1 1h9v7H1z" />
+      <path fill={T} d="M2 2h7v5H2z" />
+      <path fill={K} d="M3 8h5v1H3zM6 10h10v2H6zM6 12h2v1H6zM14 12h2v1h-2zM8 12h6v4H8z" />
+      <path fill={S} d="M9 13h4v2H9z" />
     </>
   ),
   computer: () => smallComputer(T),

@@ -1,7 +1,9 @@
 import About from './About.jsx'
 import AskJulian from './AskJulian.jsx'
 import Browser from './Browser.jsx'
+import DialUp from './DialUp.jsx'
 import DosPrompt from './DosPrompt.jsx'
+import Find from './Find.jsx'
 import Folder from './Folder.jsx'
 import Help from './Help.jsx'
 import MessageBox from './MessageBox.jsx'
@@ -9,6 +11,8 @@ import Minesweeper from './Minesweeper.jsx'
 import Nope from './Nope.jsx'
 import Notepad from './Notepad.jsx'
 import Run from './Run.jsx'
+import SystemProperties from './SystemProperties.jsx'
+import WordPad from './WordPad.jsx'
 
 // Every program the desktop can open. width/height is the initial size of resizable windows;
 // the others size themselves to their content. Dialogs have no taskbar button and no
@@ -22,6 +26,10 @@ export const APPS = {
   dos: { component: DosPrompt, width: 600, height: 380, resizable: true, title: 'MS-DOS Prompt', icon: 'dos' },
   nope: { component: Nope, width: 260, height: 278, maximizable: false, title: 'NOPE.GIF', icon: 'error' },
   help: { component: Help, width: 440, height: 420, resizable: true, title: 'Windows Help', icon: 'help' },
+  wordpad: { component: WordPad, width: 560, height: 440, resizable: true, title: (p) => `${p.name ?? 'Document'} - WordPad`, icon: 'wordpad' },
+  find: { component: Find, width: 500, height: 360, resizable: true, title: 'Find: All Files', icon: 'find' },
+  dialup: { component: DialUp, dialog: true, title: 'Connect To' },
+  sysprops: { component: SystemProperties, dialog: true, title: 'System Properties' },
   about: { component: About, dialog: true, title: (p) => `About ${p.product ?? 'Windows 95'}` },
   run: { component: Run, dialog: true, title: 'Run' },
   message: { component: MessageBox, dialog: true, title: (p) => p.title },

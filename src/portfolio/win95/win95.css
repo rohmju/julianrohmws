@@ -1265,6 +1265,345 @@
   .w95 * { scrollbar-color: var(--face) var(--light); }
 }
 
+/* ---------- Toolbars, tabs, group boxes, check boxes ---------- */
+
+.w95-toolbar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  box-shadow: inset 0 1px var(--highlight), inset 0 -1px var(--shadow);
+}
+
+.w95-toolbar__button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 23px;
+  height: 22px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+}
+
+button.w95-toolbar__button:hover { box-shadow: inset -1px -1px var(--shadow), inset 1px 1px var(--highlight); }
+button.w95-toolbar__button:active { box-shadow: inset -1px -1px var(--highlight), inset 1px 1px var(--shadow); }
+.w95-toolbar__button.is-letter { justify-content: center; color: var(--shadow); font-family: 'Times New Roman', serif; font-size: 14px; }
+
+.w95-tabs {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  padding-left: 2px;
+}
+
+.w95-tab {
+  height: 18px;
+  margin-top: 2px;
+  padding: 2px 8px 0;
+  border: 0;
+  background: var(--face);
+  box-shadow: inset 1px 1px var(--highlight), inset -1px 0 var(--dark), inset -2px 0 var(--shadow);
+}
+
+.w95-tab.is-selected {
+  height: 21px;
+  margin: 0 -2px -1px;
+  padding: 2px 10px 0;
+}
+
+.w95-tab:focus-visible { outline: 1px dotted var(--dark); outline-offset: -4px; }
+
+.w95-tabpanel {
+  padding: 12px 10px;
+  box-shadow: var(--frame);
+}
+
+.w95-group {
+  margin: 0;
+  padding: 8px 10px 10px;
+  border: 0;
+  box-shadow: inset 1px 1px var(--shadow), inset -1px -1px var(--highlight), inset 2px 2px var(--highlight), inset -2px -2px var(--shadow);
+}
+
+.w95-group legend { padding: 0 3px; }
+
+.w95-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.w95-check input {
+  flex: none;
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--highlight) center / 7px 7px no-repeat;
+  box-shadow: var(--sunken);
+}
+
+.w95-check input:checked {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath d='M6 0h1v1H6zM5 1h2v1H5zM0 2h1v1H0zM4 2h3v1H4zM0 3h2v1H0zM3 3h3v1H3zM0 4h5v1H0zM1 5h3v1H1zM2 6h1v1H2z'/%3E%3C/svg%3E");
+}
+
+.w95-check input:focus-visible ~ span { outline: 1px dotted var(--dark); }
+
+/* Text a visitor may want to copy, in a desktop where nothing else is selectable. */
+.w95-select { user-select: text; -webkit-user-select: text; cursor: text; }
+
+/* Windows 95's progress bar: navy blocks in a sunken trough. */
+.w95-progress {
+  display: block;
+  height: 16px;
+  padding: 2px;
+  box-shadow: var(--shallow);
+}
+
+.w95-progress span {
+  display: block;
+  height: 100%;
+  background: repeating-linear-gradient(90deg, var(--navy) 0 8px, transparent 8px 10px);
+}
+
+/* ---------- WordPad ---------- */
+
+.w95-wordpad__font {
+  width: 130px;
+  height: 21px;
+  margin-right: 2px;
+  padding: 3px 4px;
+  background: var(--highlight);
+  box-shadow: var(--sunken);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.w95-wordpad__font.is-size { width: 36px; margin-right: 6px; }
+
+/* The ruler: a white strip with a tick every eighth of an inch and a longer one per inch. */
+.w95-wordpad__ruler {
+  flex: none;
+  height: 16px;
+  margin: 2px 0;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 95px, var(--dark) 95px 96px) 12px 3px / 100% 9px no-repeat,
+    repeating-linear-gradient(90deg, transparent 0 11px, var(--dark) 11px 12px) 12px 6px / 100% 3px no-repeat,
+    var(--highlight);
+  box-shadow: var(--shallow);
+}
+
+.w95-wordpad__page {
+  flex: 1;
+  min-height: 0;
+  padding: 14px 18px 24px;
+  overflow-y: scroll;
+  cursor: text;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* A document's text, in WordPad and on paper. */
+.w95-doc {
+  color: #000;
+  font: 14px/1.35 'Times New Roman', Times, serif;
+  -webkit-font-smoothing: auto;
+}
+
+.w95-doc h1 { margin: 0; font-size: 26px; line-height: 1.2; }
+.w95-doc h2 {
+  margin: 18px 0 6px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid #000;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.w95-doc h3 { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 12px; margin: 0; font-size: 14px; }
+.w95-doc h3 span:last-child { font-weight: 400; font-style: italic; }
+.w95-doc p { margin: 4px 0; }
+.w95-doc ul { margin: 4px 0; padding-left: 20px; }
+.w95-doc li { margin: 1px 0; }
+.w95-doc .is-subtitle { margin-top: 2px; }
+.w95-doc .is-detail { margin: 0; font-style: italic; color: #333; }
+.w95-doc .is-entry { margin: 10px 0 0; break-inside: avoid; }
+
+/* The copy WordPad prints: hidden on screen, the only thing on paper while WordPad is open. */
+.w95-print-sheet { display: none; }
+
+@media print {
+  body:has(> .w95-print-sheet) > :not(.w95-print-sheet) { display: none !important; }
+  .w95-print-sheet { display: block; padding: 0 4mm; font-size: 11pt; }
+}
+
+/* ---------- Find ---------- */
+
+.w95-find__form {
+  display: flex;
+  flex: none;
+  gap: 10px;
+  padding: 6px 4px 8px;
+}
+
+.w95-find__search { flex: 1; min-width: 0; }
+
+.w95-find__fields {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 8px 10px;
+}
+
+.w95-find__fields .w95-input { min-width: 0; }
+.w95-find__fields .w95-check { grid-column: 2; }
+
+.w95-find__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 21px;
+}
+
+.w95-find__results { overflow: auto; }
+.w95-find__results .w95-icon__label { color: var(--dark); }
+.w95-find__results .w95-icon.is-selected .w95-icon__label { color: var(--highlight); }
+
+@media (max-width: 480px) {
+  .w95-find__form { flex-direction: column; }
+  .w95-find__buttons { flex-direction: row; padding-top: 0; }
+}
+
+/* ---------- Dial-Up Networking ---------- */
+
+.w95-dialup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(340px, 86vw);
+  padding: 12px 10px 10px;
+}
+
+.w95-dialup__main {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.w95-dialup__main .w95-glyph { flex: none; align-self: flex-start; }
+.w95-dialup__title { font-weight: 700; }
+
+.w95-dialup__fields {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 8px 10px;
+}
+
+.w95-dialup__fields .w95-input { min-width: 0; }
+.w95-dialup__fields .w95-separator { grid-column: 1 / -1; }
+
+.w95-dialup__message {
+  height: auto;
+  min-height: 64px;
+  resize: vertical;
+  align-self: stretch;
+}
+
+.w95-dialup__fields label:has(+ .w95-dialup__message) { align-self: start; padding-top: 3px; }
+.w95-dialup__number { overflow-wrap: anywhere; }
+.w95-dialup.is-status .w95-buttons { justify-content: flex-end; }
+.w95-dialup__status { margin: 4px 0 0; }
+
+/* The modem's send and receive lights. */
+.w95-dialup__lights { display: inline-flex; gap: 3px; margin-left: 8px; vertical-align: middle; }
+.w95-dialup__lights span { width: 6px; height: 6px; background: #008000; box-shadow: 0 0 0 1px var(--dark); animation: w95-blink 0.4s steps(1) infinite; }
+.w95-dialup__lights span + span { animation-delay: 0.2s; }
+
+/* ---------- System Properties ---------- */
+
+.w95-sysprops {
+  display: flex;
+  flex-direction: column;
+  width: min(380px, 90vw);
+  padding: 8px 8px 10px;
+}
+
+.w95-sysprops .w95-tabpanel { height: 330px; overflow: auto; }
+.w95-sysprops__buttons { justify-content: flex-end; margin-top: 8px; }
+
+.w95-sysprops__general {
+  display: flex;
+  gap: 24px;
+  padding: 8px 4px;
+}
+
+.w95-sysprops__general .w95-glyph { flex: none; }
+.w95-sysprops__general p { margin: 0 0 4px; }
+.w95-sysprops__general p.w95-sysprops__indent { margin: 0 0 14px 16px; }
+
+.w95-sysprops__devices { display: flex; flex-direction: column; gap: 10px; height: 100%; }
+.w95-sysprops__devices .w95-well { overflow: auto; }
+.w95-sysprops__actions { justify-content: flex-start; }
+.w95-sysprops__actions .w95-button { min-width: 0; }
+
+.w95-tree,
+.w95-tree ul { margin: 0; padding: 0; list-style: none; }
+.w95-tree { padding: 2px; }
+.w95-tree ul { padding-left: 19px; }
+
+.w95-tree__row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 18px;
+  padding: 0 2px;
+  border: 0;
+  background: none;
+  white-space: nowrap;
+}
+
+.w95-tree__row.is-selected span:last-child { background: var(--navy); color: var(--highlight); }
+.w95-tree__row:focus-visible span:last-child { outline: 1px dotted var(--dark); }
+
+.w95-tree__toggle {
+  display: grid;
+  place-items: center;
+  width: 9px;
+  height: 9px;
+  margin-left: -15px;
+  margin-right: 2px;
+  border: 1px solid var(--shadow);
+  background: var(--highlight);
+  font-size: 9px;
+  line-height: 1;
+}
+
+.w95-sysprops__performance { display: flex; flex-direction: column; gap: 12px; }
+.w95-sysprops__performance p { margin: 8px 0 0; }
+
+.w95-sysprops__stats {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+  margin: 0;
+}
+
+.w95-sysprops__stats dd { margin: 0; }
+
+.w95-sysprops__meter {
+  display: grid;
+  grid-template-columns: 1fr 120px 28px;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.w95-sysprops__meter > span:first-child { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.w95-sysprops__meter > span:last-child { text-align: right; }
+
 /* ---------- Phones ---------- */
 
 @media (max-width: 640px) {
@@ -1285,6 +1624,7 @@
   .w95[data-stage='off'] .w95-safe,
   .w95-dos__cursor,
   .w95-chat__typing,
+  .w95-dialup__lights span,
   .w95-mines__cell.is-hint::after { animation: none; }
   .w95-crt-off::before { display: none; }
 }

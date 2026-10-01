@@ -1,10 +1,13 @@
-// The desktop's little file system: a folder per department (from departments.json) plus the
-// standard Windows 95 places. Node types:
-//   folder  children                 opens a folder window
-//   file    text                     opens in Notepad
-//   link    url                      opens the URL in Internet Explorer
-//   app     app                      starts a program (see apps/index.js)
-//   error   error {title,text,icon}  shows a message box, like an empty floppy drive
+import { buildResume, resumeText } from './resume.js'
+
+// The desktop's little file system: a folder per department (from departments.json), Julian's CV
+// (from profile.json) plus the standard Windows 95 places. Node types:
+//   folder    children                 opens a folder window
+//   file      text                     opens in Notepad
+//   document  blocks, text             opens in WordPad (text is what Find searches)
+//   link      url                      opens the URL in Internet Explorer
+//   app       app                      starts a program (see apps/index.js)
+//   error     error {title,text,icon}  shows a message box, like an empty floppy drive
 
 const PLACEHOLDER = '(coming soon)'
 // Every file claims the day Windows 95 shipped.
@@ -111,15 +114,21 @@ const CONFIG_SYS = `DEVICE=C:\\WINDOWS\\HIMEM.SYS
 DOS=HIGH,UMB
 FILES=40`
 
-export function buildFileSystem(departments) {
+// profile (profile.json) is optional: the chatbot's server builds the departments without it.
+export function buildFileSystem(departments, profile) {
   const folders = departments.map(departmentFolder)
+  const blocks = profile ? buildResume(profile, departments) : []
+  const resume = { type: 'document', id: 'resume', name: 'Resume.doc', icon: 'wordpad', kind: 'WordPad Document', blocks, text: resumeText(blocks) }
 
   const programs = {
     notepad: { type: 'app', id: 'app/notepad', name: 'Notepad', icon: 'notepad', app: 'notepad' },
     minesweeper: { type: 'app', id: 'app/minesweeper', name: 'Minesweeper', icon: 'minesweeper', app: 'minesweeper' },
     browser: { type: 'app', id: 'app/iexplore', name: 'Internet Explorer', icon: 'ie', app: 'browser' },
     chat: { type: 'app', id: 'app/askjulian', name: 'Ask Julian', icon: 'chat', app: 'chat' },
+    dialup: { type: 'app', id: 'app/dialup', name: 'Contact Julian', icon: 'dialup', app: 'dialup' },
+    find: { type: 'app', id: 'app/find', name: 'Find', icon: 'find', app: 'find' },
   }
+  const myDocuments = { type: 'folder', id: 'my-documents', name: 'My Documents', icon: 'folder', children: [resume, ...folders] }
 
   const driveC = {
     type: 'folder',
@@ -128,14 +137,25 @@ export function buildFileSystem(departments) {
     icon: 'drive-hd',
     kind: 'Local Disk',
     children: [
-      { type: 'folder', id: 'my-documents', name: 'My Documents', icon: 'folder', children: folders },
+      myDocuments,
       {
         type: 'folder',
         id: 'program-files',
         name: 'Program Files',
         icon: 'folder',
         children: [
-          { type: 'folder', id: 'accessories', name: 'Accessories', icon: 'folder', children: [programs.notepad, programs.minesweeper] },
+          {
+            type: 'folder',
+            id: 'accessories',
+            name: 'Accessories',
+            icon: 'folder',
+            children: [
+              programs.notepad,
+              programs.minesweeper,
+              { type: 'app', id: 'accessories/wordpad', name: 'WordPad', icon: 'wordpad', app: 'wordpad' },
+              { ...programs.dialup, id: 'accessories/dialup', name: 'Dial-Up Networking' },
+            ],
+          },
           { type: 'folder', id: 'plus', name: 'Plus!', icon: 'folder', children: [{ ...programs.browser, id: 'plus/iexplore', name: 'Iexplore.exe' }] },
           { type: 'folder', id: 'ask-julian', name: 'Ask Julian', icon: 'folder', children: [{ ...programs.chat, id: 'ask-julian/exe', name: 'Askjulian.exe' }] },
         ],
@@ -163,6 +183,7 @@ export function buildFileSystem(departments) {
     name: 'My Computer',
     icon: 'computer',
     kind: 'System Folder',
+    properties: 'sysprops', // right-click → Properties opens System Properties
     children: [
       { type: 'error', id: 'drive-a', name: '3½ Floppy (A:)', icon: 'drive-floppy', kind: '3½ Inch Floppy Disk', error: notAccessible('A') },
       driveC,
@@ -199,9 +220,20 @@ export function buildFileSystem(departments) {
 
   return {
     myComputer,
+    myDocuments,
+    resume,
     departments: folders,
     // Desktop: the system icons in the first column, then the departments.
-    system: [myComputer, network, { ...programs.browser, id: 'desktop/iexplore' }, recycleBin, { ...programs.minesweeper, id: 'desktop/minesweeper', shortcut: true }, { ...programs.chat, id: 'desktop/askjulian', shortcut: true }],
+    system: [
+      myComputer,
+      network,
+      { ...programs.browser, id: 'desktop/iexplore' },
+      recycleBin,
+      { ...resume, id: 'desktop/resume', shortcut: true },
+      { ...programs.dialup, id: 'desktop/contact', shortcut: true },
+      { ...programs.minesweeper, id: 'desktop/minesweeper', shortcut: true },
+      { ...programs.chat, id: 'desktop/askjulian', shortcut: true },
+    ],
     programs,
   }
 }
@@ -219,9 +251,9 @@ export function kindOf(node) {
 }
 
 // Bytes a node takes up; programs get plausible sizes of the real ones.
-const APP_BYTES = { notepad: 34304, minesweeper: 24336, dos: 92870, browser: 438272, chat: 65536 }
+const APP_BYTES = { notepad: 34304, minesweeper: 24336, dos: 92870, browser: 438272, chat: 65536, wordpad: 204288, dialup: 39424, find: 18944 }
 export function sizeOf(node) {
-  if (node.type === 'file') return new TextEncoder().encode(node.text).length
+  if (node.type === 'file' || node.type === 'document') return new TextEncoder().encode(node.text).length
   if (node.type === 'app') return APP_BYTES[node.app] ?? 0
   if (node.type === 'link') return 108
   return null

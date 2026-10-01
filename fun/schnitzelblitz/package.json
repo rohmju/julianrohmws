@@ -1,0 +1,12 @@
+{
+  "name": "schnitzelblitz-render",
+  "private": true,
+  "type": "module",
+  "description": "Renders SCHNITZELBLITZ – Die komplette Saga as a procedural trailer (video + synthesized sound).",
+  "scripts": {
+    "render": "node render/build.mjs"
+  },
+  "dependencies": {
+    "@napi-rs/canvas": "^1.0.9"
+  }
+}

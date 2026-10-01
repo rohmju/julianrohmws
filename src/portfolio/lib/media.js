@@ -22,6 +22,18 @@ export const idlePoster = (variant) => `${VIDEO_BASE}/idle-poster-${variant}.jpg
 // Last frame of the reveal clip; the board scene is textured with it for a seamless crossfade.
 export const BOARD_IMAGE = `${VIDEO_BASE}/board-end.jpg`
 
+// Last frame of the departments clip (the CRT showing the Windows 95 start-up screen) and first
+// frame of its return (the same monitor, switched off).
+export const SCREEN_IMAGE = `${VIDEO_BASE}/screen-end.jpg`
+export const SCREEN_OFF_IMAGE = `${VIDEO_BASE}/screen-off.jpg`
+
+// Each section leaves the idle loop through `reveal` and comes back through `back`. endImage is the
+// reveal's last frame, backImage the return's first; without motion they replace the clips.
+export const SECTIONS = {
+  projects: { reveal: 'reveal', back: 'return', endImage: BOARD_IMAGE, backImage: BOARD_IMAGE },
+  departments: { reveal: 'departments', back: 'departments-return', endImage: SCREEN_IMAGE, backImage: SCREEN_OFF_IMAGE },
+}
+
 // The board image in world units (16:9), and the part of it each clip variant shows before CSS
 // object-fit: cover crops it further. The board camera reproduces exactly the same crop.
 export const BOARD_SIZE = { width: 16, height: 9 }

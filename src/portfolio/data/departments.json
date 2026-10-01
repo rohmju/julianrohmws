@@ -1,0 +1,191 @@
+{
+  "$comment": "Content for the Windows 95 desktop behind 'My Departments', in desktop order. Each department becomes a folder with four text files: 'Info' (grading scale, overall grade and every single grade), 'Tasks & Focus Areas' (period, trainer, grade, then tasks), 'Trainer Feedback & Special Achievements' and 'Julian's Feedback to the Department'. grades and feedback follow the 8 criteria in fileSystem.js (CRITERIA); studentFeedback has one { grade, notes } per entry of STUDENT_CRITERIA. color tints the folder, its windows and its files. Empty lists render as placeholders.",
+  "departments": [
+    {
+      "id": "cybersec",
+      "name": "Cyber Security",
+      "color": "#d32f2f",
+      "period": "Sep 1, 2024 – Feb 28, 2025",
+      "year": "1st year of training",
+      "trainer": "Christian Coman-Löw",
+      "rating": "3.13 / 4.00",
+      "tasks": [
+        "Introduction to IT security and cyber security processes and handling of department-specific tasks in the first year of training."
+      ],
+      "grades": [4, 3, 3, 3, 3, 3, 3, 3],
+      "feedback": [
+        "Quickly became familiar with the people, the department and the tasks.",
+        "Acquired the required expertise and applied it successfully.",
+        "\"Julian quickly grasped the tasks given to him. We were extremely satisfied with his performance.\"",
+        "\"Julian consistently showed a high level of commitment and was willing to take on additional responsibility. He worked dedicatedly and purposefully on the tasks assigned to him and impressed with his enthusiasm.\"",
+        "\"Julian showed a pronounced interest in new topics. He was also interested in the department's work processes. His willingness to learn was striking, and he quickly acquired knowledge to fulfil his tasks even more effectively.\"",
+        "\"– Julian set clear priorities regarding importance and urgency and ensured that the tasks assigned to him were completed on schedule. – Julian proactively kept us up to date on the progress of his work.\"",
+        "Good performance in quality and quantity.",
+        "Well integrated into the team, polite and collegial."
+      ],
+      "studentFeedback": [
+        { "grade": 3, "notes": ["The main tasks were explained clearly."] },
+        { "grade": 3, "notes": ["Fixed contacts were available and gave enough feedback."] },
+        { "grade": 3, "notes": ["Appropriate workload without being overwhelmed or underchallenged."] }
+      ]
+    },
+    {
+      "id": "data-platform",
+      "name": "Data Platform",
+      "color": "#1976d2",
+      "period": "Mar 1, 2025 – Sep 1, 2025",
+      "year": "1st year of training",
+      "trainer": "Nitin Kumar Vashisth",
+      "rating": "3.50 / 4.00",
+      "tasks": [
+        "Use of the Google Cloud Platform (GCP) for development and administration tasks.",
+        "Working with PostgreSQL databases (creating, managing and querying) as well as linking and setting up databases.",
+        "Use of Terraform for infrastructure automation.",
+        "Design and implementation of interfaces.",
+        "Development of Python scripts to automate processes.",
+        "Working with GitHub (version control and collaboration).",
+        "Participation in online courses and tutorials for professional development."
+      ],
+      "grades": [4, 4, 4, 4, 3, 3, 3, 3],
+      "feedback": [
+        "\"He was able to settle into the department very well in a short time and showed a quick understanding of the tasks and content. Contact with colleagues also worked without any problems, so smooth collaboration was possible.\"",
+        "\"Training on SQL and GCP carried out. Further knowledge is required to learn more about real-time projects and the further implementation of data pipelines with Terraform.\"",
+        "\"You show a good understanding of complex relationships and can mostly apply what you have learned with confidence. Occasionally an even deeper grasp of the content would be desirable. Keep it up – with a bit more initiative, the potential can be exploited even better.\"",
+        "\"Showed a solid level of commitment and personal effort in handling tasks. Mostly acted independently and contributed his own ideas. Overall a good performance with potential for further development.\"",
+        "\"Shows a good degree of initiative through purposeful questions and genuine interest in department and company processes. Openness to new topics and willingness to learn are clearly visible. Overall a solid performance with potential for further deepening.\"",
+        "\"Shows a predominantly reliable and conscientious way of working, even under pressure. Mostly sets priorities correctly and meets deadlines for the most part. Regularly reports on the state of work and is open to feedback.\"",
+        "\"Performance is satisfactory overall – tasks are completed reliably and with good quality. The pace of work is appropriate, results are consistent. Overall a solid performance with potential for further optimisation.\"",
+        "\"Integration into the team went well, collaboration with colleagues was effective. Conduct was consistently polite and collegial, with a positive, open attitude. Feedback was accepted and reflected on, there is further potential for development.\""
+      ],
+      "studentFeedback": [
+        { "grade": 4, "notes": ["\"The main tasks of the department and all important information were explained to me clearly.\""] },
+        { "grade": 4, "notes": ["\"There were fixed contacts who were always available, took enough time for my supervision and gave helpful feedback.\""] },
+        { "grade": 3, "notes": ["\"The tasks were interesting, informative and well matched to my level of knowledge.\""] }
+      ]
+    },
+    {
+      "id": "picknpack",
+      "name": "Instore Operations Apps",
+      "color": "#f57c00",
+      "period": "Sep 1, 2025 – Feb 28, 2026",
+      "year": "2nd year of training",
+      "trainer": "Hantong Liu",
+      "rating": "4.00 / 4.00 (top rating in all criteria)",
+      "tasks": [
+        "Introduction to several JavaScript frameworks and contribution to the development of the store application \"Pick n Pack\"."
+      ],
+      "grades": [4, 4, 4, 4, 4, 4, 4, 4],
+      "feedback": [
+        "\"Julian integrated very quickly into the existing structures, processes and especially into the team.\"",
+        "\"Julian acquired the required expertise very quickly and thoroughly and applied it confidently and in a practice-oriented way.\"",
+        "\"He has a very quick grasp and reliably understands even complex relationships. He takes in new content in a structured way and implements it purposefully.\"",
+        "\"Julian showed a high level of commitment and initiative at all times. He approached tasks in a motivated and responsible way.\"",
+        "\"He showed great interest in technical background and asked thoughtful and purposeful questions. He took up new topics openly and with a willingness to learn.\"",
+        "\"His working style is structured, reliable and quality-conscious. He sets priorities sensibly and deadlines are always met.\"",
+        "\"Julian consistently delivered high-quality results and impressed with a clean and comprehensible implementation.\"",
+        "\"Julian always came across as friendly, respectful and professional. He worked constructively with colleagues and took feedback on board openly and reflectively.\""
+      ],
+      "studentFeedback": [
+        { "grade": 4, "notes": ["\"Thanks to a structured onboarding and close collaboration with the specialist colleagues, I was able to acquire sound expertise in the required technologies and use it productively right away.\""] },
+        { "grade": 4, "notes": ["\"A contact person was always available.\""] },
+        { "grade": 4, "notes": ["\"Through an individual task assignment and targeted onboarding, I was able to contribute efficiently to JavaScript frameworks and the development of the 'Pick n Pack' app.\""] }
+      ]
+    },
+    {
+      "id": "enterprise-architecture",
+      "name": "Enterprise Architecture",
+      "color": "#7b1fa2",
+      "period": "Mar 1, 2026 – May 31, 2026",
+      "year": "2nd year of training",
+      "trainer": "Stefan Zips",
+      "rating": "3.13 / 4.00",
+      "tasks": [
+        "Review and optimisation of the user manual for the application LeanIX.",
+        "Review, further development and optimisation of the LeanIX e-learning.",
+        "Development and training of an AI chatbot that answers user questions about LeanIX content, based on an MCP server connection."
+      ],
+      "grades": [3, 3, 3, 3, 4, 3, 4, 3],
+      "feedback": [
+        "\"Julian fitted well into the team structure and completed all tasks given to him to full satisfaction. He quickly and professionally worked his way into the previously unfamiliar tool \"42\" for developing and training the bot.\"",
+        "\"Through his open and friendly manner in working with all superiors and colleagues, Julian quickly acquired the knowledge needed to handle all tasks.\"",
+        "Quickly acquired the necessary knowledge in a complex architecture environment.",
+        "\"All tasks given to him were completed satisfactorily; in future departments, Julian may bring in his good ideas even more proactively.\"",
+        "\"Thanks to his open nature, Julian worked out the new relationships in working with LeanIX and the bot to be developed from day one. He was able to formulate purposeful questions, laying the foundation for the successful completion of all tasks, and always found ways to further improve his results based on the feedback he received.\"",
+        "\"Julian always proceeded methodically and conscientiously on all tasks and ensured through suitable measures that his results were fully documented and checked for potential errors.\"",
+        "\"Julian completed all tasks given to him to our fullest satisfaction. His first draft of the chatbot and his presentation of the bot to the team were particularly successful.\"",
+        "See the comments on onboarding success and expertise."
+      ],
+      "studentFeedback": [
+        {
+          "grade": 3,
+          "notes": [
+            "+ \"I understood right away what the department does.\"",
+            "+ \"Enough time to get to grips with the basics of LeanIX.\"",
+            "+ \"I only learned the relevant topics and nothing unnecessary.\"",
+            "- \"I would have liked to learn more about my colleagues' work.\""
+          ]
+        },
+        {
+          "grade": 3,
+          "notes": ["+ \"Every question answered clearly.\"", "+ \"Available at any time and on site.\""]
+        },
+        {
+          "grade": 4,
+          "notes": [
+            "++ \"Creative task: AI.\"",
+            "+ \"Collaboration with Ensar.\"",
+            "+ \"Good that the tasks are meant to bring something to the department.\"",
+            "- \"The tasks in the first week could have been made somewhat more interesting.\"",
+            "- \"Especially the search for errors could be left out in future.\""
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tech-strategy-op-excellence",
+      "name": "Tech Strategy & Operational Excellence",
+      "color": "#00897b",
+      "period": "Jun 1, 2026 – Aug 31, 2026",
+      "year": "2nd year of training",
+      "trainer": "Claudia Stamp",
+      "rating": "3.50 / 4.00",
+      "tasks": [
+        "Company goal events (Pillar 5): support of the Praise campaign for the football World Cup.",
+        "TSOE areas (Delivery Management, Agile Enablement, Transformation & Training): practical application of agile methods, participation in team meetings, facilitation of the daily.",
+        "Participation in the Big Room Planning Days MMS Technology.",
+        "Scrum Master training (certification pending).",
+        "Preparation and independent facilitation of a retrospective in the T&T area, plus running Lean Coffee in Delivery Management.",
+        "Participation in workshops: AI Ideathon HR workshop and Flex workshop."
+      ],
+      "grades": [4, 3, 4, 3, 4, 3, 3, 4],
+      "feedback": [
+        "\"Julian integrated quickly into the team, took an active part and rapidly built a good understanding of the team's topics.\"",
+        "\"Julian deepened his knowledge of agile methods and Scrum through active work in the team and the practical application of what he learned.\"",
+        "\"Julian showed a good understanding of complex topics and their relationships. Through his active participation in team activities and his work on various tasks, he continuously expanded his knowledge and put what he learned into practice.\"",
+        "\"He supported the team on a wide range of topics and showed initiative.\"",
+        "\"Julian showed great interest and willingness to learn, and took part in the Flex workshop and team activities.\"",
+        "\"Julian worked reliably and in a structured way, integrated quickly into the teamwork and took over a retrospective from our team.\"",
+        "\"Through his participation in various workshops, his support on AI topics, his contribution to team tasks and the facilitation of a retrospective, he showed both quality and initiative in his work.\"",
+        "\"Julian integrated quickly into the team, worked cooperatively with his colleagues and made a positive contribution to the team atmosphere.\""
+      ],
+      "studentFeedback": [
+        { "grade": 4, "notes": ["\"Comprehensive insight into the AE, DM and T&T teams, was welcomed and integrated into the team very well.\""] },
+        { "grade": 4, "notes": ["\"Support was very good, always had several contacts who were always there and supported me while learning the Scrum methods.\""] },
+        { "grade": 4, "notes": ["\"Many varied activities, from team meetings and facilitating meetings to organisational work, and time to prepare for the Scrum certification.\""] }
+      ]
+    },
+    {
+      "id": "mystore",
+      "name": "Mystore",
+      "color": "#c2185b",
+      "period": "",
+      "year": "",
+      "trainer": "",
+      "rating": "",
+      "tasks": [],
+      "grades": [],
+      "feedback": [],
+      "studentFeedback": []
+    }
+  ]
+}

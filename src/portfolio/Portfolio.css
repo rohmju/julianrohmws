@@ -65,12 +65,12 @@
 .pf-stage__video[data-layer='under'] { z-index: 2; }
 .pf-stage__video[data-layer='front'] { z-index: 3; }
 
-.pf-stage__still--board {
+.pf-stage__still--end {
   z-index: 4;
   opacity: 0;
   transition: opacity 900ms var(--ease-in-out);
 }
-.pf-stage__still--board.is-visible { opacity: 1; }
+.pf-stage__still--end.is-visible { opacity: 1; }
 
 /* ---------- Film grain + vignette ---------- */
 
@@ -79,7 +79,12 @@
   inset: 0;
   z-index: 30;
   pointer-events: none;
+  transition: opacity 700ms var(--ease-in-out);
 }
+
+/* The Windows 95 desktop is a crisp screen, not film. */
+.pf-phase-desktop .pf-film { opacity: 0; }
+.pf-phase-desktop .pf-film__grain { animation-play-state: paused; }
 
 .pf-film__grain {
   position: absolute;

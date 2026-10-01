@@ -5,32 +5,38 @@
 // never logged or written anywhere. Nothing in src/ imports this file, and Vite only exposes
 // VITE_-prefixed variables, so the key can't reach the frontend bundle or Vercel.
 //
+// Two sequences start from the same idle frame:
+//   projects      idle loop, reveal (backdrop → chalkboard) and return
+//   departments   the camera is carried to an old desk and crash-zooms into a CRT showing the
+//                 Windows 95 start-up screen; the return pulls back from the switched-off monitor
+//
 // Pipeline — every step caches its output under assets/generated/ and is skipped on re-runs:
-//   1. frame-idle   Outpaint the 3:4 reference photo to 16:9, then paste the original pixels back
-//                   on top so the character is untouched. This is the start frame of everything.
-//   2. frame-board  Generate the frontal black-board still in the same light. It is the last frame
-//                   of the reveal and the first frame of the return, and the Three.js board is
-//                   textured with it.
-//   3. videos       Kling 3.0 4K image-to-video with first + last frame:
-//                     idle   4 s  frame-idle  → frame-idle   (seamless loop)
-//                     reveal 8 s  frame-idle  → frame-board  (second half re-generated, see CLIPS)
-//                     return 8 s  frame-board → frame-idle
-//   4. encode       Pin each clip's first/last frames to the exact anchor stills with a short
-//                   smoothstep blend (so every handoff is frame-identical even if the model drifts),
-//                   then encode MP4 (H.264) + WebM (VP9) in landscape 1920×1080 and portrait
-//                   1080×1920, plus poster frames and board-end.jpg (the reveal's real last frame).
+//   1. frames   frame-idle: outpaint the 3:4 reference photo to 16:9, then paste the original
+//                 pixels back on top so the character is untouched. The start frame of everything.
+//               STILLS: every other anchor still, generated with earlier anchors as references.
+//                 frame-board is the reveal's last frame and textures the Three.js board.
+//   2. videos   Kling 3.0 4K image-to-video with first + last frame (see CLIPS). A clip with parts
+//               is rendered piece by piece, each piece between two anchor stills, so the model
+//               never has to invent where the camera ends up.
+//   3. encode   Pin each clip's (or part's) first/last frames to the exact anchor stills with a short
+//               smoothstep blend (so every handoff is frame-identical even if the model drifts),
+//               join parts, then encode MP4 (H.264) + WebM (VP9) in landscape 1920×1080 and portrait
+//               1080×1920, plus the posters and stills the frontend shows around the clips.
 //
 // Usage:
-//   npm run generate:videos                          run whatever is missing
-//   npm run generate:videos -- --only=frames         one or more of: frames, videos, encode
-//   npm run generate:videos -- --force=reveal        redo steps: frame-idle, frame-board, idle, reveal, return
-//   npm run generate:videos -- --dry-run             show what would be submitted, spend nothing
+//   npm run generate:videos                               run whatever is missing
+//   npm run generate:videos -- --sequence=departments     one or more of: projects, departments
+//   npm run generate:videos -- --only=frames              one or more of: frames, videos, encode
+//   npm run generate:videos -- --force=reveal             redo keys: stills (frame-*), clips, parts
+//   npm run generate:videos -- --dry-run                  show what would be submitted and what it
+//                                                         would cost, spend nothing
 //   npm run generate:videos -- --only=encode --clips=reveal   re-encode selected clips only
 //
+// Forcing a still does not force the stills and clips made from it; list those too.
 // A request that was submitted but not finished (crash, timeout, Ctrl+C) is stored in
 // assets/generated/manifest.json and resumed on the next run instead of being paid for twice.
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync, rmSync } from 'node:fs';
 import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
@@ -47,6 +53,11 @@ const PROCESSED = path.join(GEN, 'processed');
 const OUT = path.join(ROOT, 'public/videos');
 const MANIFEST = path.join(GEN, 'manifest.json');
 const FFMPEG = ffmpegInstaller.path;
+
+// Hand-made reference images that are not generated.
+const SOURCES = {
+  'win95-boot': path.join(ROOT, 'assets/source/win95-boot.png'),
+};
 
 const IMAGE_ENDPOINT = 'marketing-studio/image';
 const VIDEO_ENDPOINT = 'kling-video/v3.0/4k/image-to-video';
@@ -75,6 +86,58 @@ of erased chalk, soft chalk-dust smudges, a few old nail holes and fine scratche
 of light in the center falling off to darker corners. Straight-on orthogonal view, no perspective
 tilt, level horizon, sharp focus across the whole board. No people, no hands, no text, no posters,
 no objects in front of the board.`,
+
+  // Departments stills. The first reference sets the look; win95-boot is what the CRT displays.
+  desk: `Photorealistic still frame from the same film as the first reference image: the same dim
+photo studio, the same cool blue-grey color grade, the same soft key light, the same subtle film
+grain and gentle vignette, the same lens and exposure. The camera has turned to the right, away from
+the mottled backdrop, and now looks into a dark side of the studio at standing eye level. About three
+meters away an old, worn writing desk of dark wood stands on the grey concrete floor in front of
+heavy black studio curtains that fall into deep shadow. The whole desk is visible and spans roughly
+the middle half of the frame width. On the desk sits a mid-1990s beige personal computer: a slightly
+yellowed beige 14-inch CRT monitor with a thick bezel stands on a flat beige desktop case with a
+3.5-inch floppy drive and a small green power light; in front of it a beige keyboard, a ball mouse on
+a worn mouse pad, a few black 3.5-inch floppy disks and a chipped coffee mug. The monitor is switched
+on and shows exactly the Windows 95 start-up screen from the second reference image: the sky-blue
+cloud background, the four-colored waving Windows flag logo and the words Microsoft Windows 95. Its
+cool glow spills softly onto the desk, the keyboard and the wood grain; everything else stays dim.
+The monitor screen sits exactly in the center of the frame, level and seen straight on. Nothing else
+in the room: no people, no hands, no chair, no lamps, no windows, no posters, no text except on the
+screen.`,
+
+  screen: `Photorealistic extreme close-up still from the same film as the first reference image: the
+same beige 1990s CRT monitor from that desk, the same dim studio light, the same cool blue-grey
+color grade, the same fine film grain. The camera is now very close to and perfectly frontal to the
+monitor. Its slightly bulging glass screen fills almost the full height of the 16:9 frame and is
+exactly centered; the yellowed beige plastic bezel shows as a thin strip above and below the screen
+and as wider bands on the left and right that fall off into the dark studio at the frame edges. The
+screen shows the complete Windows 95 start-up screen from the second reference image, exactly as it
+is and not cropped: the sky-blue background with soft white clouds, the four-colored waving Windows
+flag logo, the words Microsoft Windows 95, the small Microsoft wordmark in the top right corner and
+the thin blue progress bar along the bottom edge. Authentic CRT character: fine horizontal scanlines
+and a subtle RGB phosphor dot pattern, a soft glow and gentle bloom around the bright areas, slightly
+darker rounded screen corners, a faint reflection of the dark studio on the curved glass and a few
+specks of dust. The picture on the screen is sharp and in focus. No people, no hands, no reflection
+of a person.`,
+
+  'screen-off': `Edit this photograph. Keep exactly the same framing, camera position, monitor, bezel,
+light, color grade and film grain. Change only one thing: the CRT monitor is now switched off. Its
+curved glass screen is dark charcoal grey with a faint green-grey tint and shows only soft, dim
+reflections of the studio and a few specks of dust. No picture, no logo, no text, no scanlines and no
+glow on the screen, and the bezel is lit only by the dim studio light. Everything else stays exactly
+the same.`,
+
+  'desk-off': `Edit this photograph. Keep exactly the same framing, camera position, desk, computer,
+keyboard, mouse, floppy disks, mug, curtains, light, color grade and film grain. Change only one
+thing: the CRT monitor is now switched off. Its glass screen is dark charcoal grey with a faint
+reflection, no picture, no logo and no glow, and the cool light it cast onto the desk and keyboard is
+gone, so the desk is lit only by the dim studio light. Everything else stays exactly the same.`,
+
+  'studio-empty': `Edit this photograph. Remove the young man completely, including his shadow on the
+floor. Keep everything else exactly as it is: the same framing and camera position, the mottled blue
+canvas backdrop, the black studio curtains, the grey concrete floor with its soft pool of light, the
+same light, color grade and film grain. Where he stood, continue the backdrop fabric and the floor
+naturally and seamlessly. The studio is empty: no people, no objects.`,
 
   idle: `Locked-off static camera, no camera movement at all. Photorealistic cinematic footage in a dim
 photo studio with a cool blue-grey grade and fine film grain. The young man stands still with his
@@ -111,18 +174,97 @@ he steps around behind it, out of view. Now carried by him, handheld and steady,
 smoothly forward toward the chalkboard until the empty black slate fills the whole frame, perfectly
 frontal and centered, and comes to rest, still. Only this one person ever appears: no second person,
 no duplicate, no reflection of him.`,
+
+  // Departments: idle → desk → screen, and back from the switched-off screen.
+  'departments-a': `One continuous shot, photorealistic and cinematic, in a dim photo studio with a cool
+blue-grey grade and fine film grain. There is exactly one person in the scene: the young man standing
+centered in front of the mottled blue canvas backdrop with his arms crossed. He uncrosses his arms,
+walks straight up to the camera, reaches out with both hands and grips it; the view jolts slightly
+as he lifts it and steps behind it, out of view. Now carried by him, handheld, the camera swings
+smoothly to the right, away from the backdrop and across the dark studio curtains, and discovers an
+old dark wooden desk standing at the side of the studio with a beige 1990s computer on it, its CRT
+monitor glowing with the Windows 95 start-up screen. The camera slows down, settles centered on the
+monitor and holds still. Only this one person ever appears: no second person, no duplicate, no
+reflection of him.`,
+
+  'departments-b': `One continuous shot, photorealistic and cinematic, in a dim photo studio with a cool
+blue-grey grade and fine film grain. The handheld camera holds on the old wooden desk with the beige
+1990s computer for a brief beat, the CRT monitor glowing with the Windows 95 start-up screen. Then a
+violent, extremely fast crash zoom straight into the monitor: the lens slams in, the whole image
+smears with heavy radial motion blur and zoom streaks, overshoots slightly and falls completely out
+of focus into a soft glowing blur; the focus hunts, breathing soft and sharp twice, then snaps
+razor-sharp onto the Windows 95 start-up screen, which now fills the frame between the beige bezel.
+The camera comes to rest, perfectly still and frontal. No people, no hands.`,
+
+  'departments-return-a': `One continuous shot, photorealistic and cinematic, in a dim photo studio with
+a cool blue-grey grade and fine film grain. The shot starts extremely close and frontal on the dark,
+switched-off glass of an old beige CRT monitor. The handheld camera pulls back smoothly and steadily,
+gently easing out, revealing the whole monitor, the beige computer, the keyboard and the old dark
+wooden desk, and comes to rest. The monitor stays switched off and dark the whole time. No people, no
+hands.`,
+
+  // The way back is split at the empty studio: a pan in one render and his entrance in the next,
+  // because a single render faded him in out of thin air instead of letting him walk in.
+  'departments-return-b': `One continuous shot, photorealistic and cinematic, in a dim photo studio with
+a cool blue-grey grade and fine film grain. The handheld camera looks at the old wooden desk with the
+switched-off beige computer, then swings smoothly to the left, away from the desk and across the dark
+studio curtains, until the mottled blue canvas backdrop in the middle of the studio is centered in
+the frame. The camera is set down on its original spot and settles completely still. The studio is
+empty: no people, no hands, no shadows of people.`,
+
+  'departments-return-c': `Locked-off static camera, no camera movement at all. Photorealistic cinematic
+footage in a dim photo studio with a cool blue-grey grade and fine film grain, framing the mottled
+blue canvas backdrop in the middle of the studio. The young man walks into the frame from the right
+edge, fully solid and real from the first moment, crosses the floor in front of the backdrop to the
+center, turns to face the camera and crosses his arms, ending in exactly the original pose: standing
+centered, arms crossed, looking calmly into the lens. There is exactly one person in the scene: no
+second person, no duplicate, no reflection of him.`,
 };
+
+// Anchor stills generated from earlier anchors; `refs` go to the model in this order.
+// frame-idle is special (outpaint + paste-back, see frameIdle) and comes first.
+const STILLS = [
+  { key: 'frame-board', sequence: 'projects', prompt: 'board', refs: ['frame-idle'] },
+  { key: 'frame-desk', sequence: 'departments', prompt: 'desk', refs: ['frame-idle', 'win95-boot'] },
+  { key: 'frame-screen', sequence: 'departments', prompt: 'screen', refs: ['frame-desk', 'win95-boot'] },
+  { key: 'frame-desk-off', sequence: 'departments', prompt: 'desk-off', refs: ['frame-desk'] },
+  { key: 'frame-screen-off', sequence: 'departments', prompt: 'screen-off', refs: ['frame-screen'] },
+  { key: 'frame-studio-empty', sequence: 'departments', prompt: 'studio-empty', refs: ['frame-idle'] },
+];
 
 // Anchor blends (seconds): how long each clip eases from / into its exact anchor still.
 // splice: the first reveal render duplicated the character after frame 89, so frames 0..at-1 are
 // kept and the rest is re-generated starting from frame `at`.
+// parts: rendered separately between anchor stills and joined on the shared still. The camera
+// settles on the desk between the swing and the crash zoom, which reads as a deliberate beat.
+// trim: seconds of the render to keep. focus: lens pulses added in the encode (see FOCUS_SIGMA).
 const CLIPS = [
-  { key: 'idle', seconds: 4, first: 'frame-idle', last: 'frame-idle', head: 0.5, tail: 0.5, loop: true },
+  { key: 'idle', sequence: 'projects', seconds: 4, first: 'frame-idle', last: 'frame-idle', head: 0.5, tail: 0.5, loop: true },
   {
-    key: 'reveal', seconds: 8, first: 'frame-idle', last: 'frame-board', head: 0.3, tail: 0.5,
+    key: 'reveal', sequence: 'projects', seconds: 8, first: 'frame-idle', last: 'frame-board', head: 0.3, tail: 0.5,
     splice: { key: 'reveal-b', at: 86, seconds: 5 },
   },
-  { key: 'return', seconds: 8, first: 'frame-board', last: 'frame-idle', head: 0.3, tail: 0.6 },
+  { key: 'return', sequence: 'projects', seconds: 8, first: 'frame-board', last: 'frame-idle', head: 0.3, tail: 0.6 },
+  {
+    key: 'departments', sequence: 'departments',
+    parts: [
+      { key: 'departments-a', seconds: 5, first: 'frame-idle', last: 'frame-desk', head: 0.3, tail: 0.35 },
+      {
+        // The render lands the zoom at ~1.6 s and then holds; the lens hunts for focus right after
+        // landing and the screen hands over to the desktop soon after it is sharp.
+        key: 'departments-b', seconds: 4, first: 'frame-desk', last: 'frame-screen', head: 0.12, tail: 0.5,
+        trim: 3, focus: [[1.7, 0.16, 1], [1.98, 0.11, 0.55], [2.18, 0.07, 0.25]],
+      },
+    ],
+  },
+  {
+    key: 'departments-return', sequence: 'departments',
+    parts: [
+      { key: 'departments-return-a', seconds: 3, first: 'frame-screen-off', last: 'frame-desk-off', head: 0.3, tail: 0.25 },
+      { key: 'departments-return-b', seconds: 3, first: 'frame-desk-off', last: 'frame-studio-empty', head: 0.2, tail: 0.3 },
+      { key: 'departments-return-c', seconds: 4, first: 'frame-studio-empty', last: 'frame-idle', head: 0.3, tail: 0.6 },
+    ],
+  },
 ];
 
 // Every clip is normalized to this size before anchoring (Kling returns 3840×2156 or ×2160).
@@ -142,7 +284,11 @@ const args = Object.fromEntries(
 const ONLY = new Set(args.only ? String(args.only).split(',') : ['frames', 'videos', 'encode']);
 const FORCE = new Set(args.force ? String(args.force).split(',') : []);
 const ONLY_CLIPS = args.clips ? new Set(String(args.clips).split(',')) : null; // encode: e.g. --clips=reveal
+const SEQUENCES = new Set(args.sequence ? String(args.sequence).split(',') : ['projects', 'departments']);
 const DRY = Boolean(args['dry-run']);
+
+const stills = STILLS.filter((s) => SEQUENCES.has(s.sequence));
+const clips = CLIPS.filter((c) => SEQUENCES.has(c.sequence));
 
 for (const dir of [GEN, RAW, PROCESSED, OUT]) mkdirSync(dir, { recursive: true });
 
@@ -155,6 +301,7 @@ const log = (...parts) => console.log(`[${new Date().toISOString().slice(11, 19)
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const sha256 = (data) => createHash('sha256').update(data).digest('hex');
 const fileFor = (name) => path.join(GEN, `${name}.png`);
+const anchorFile = (name) => SOURCES[name] ?? fileFor(name);
 
 // ---------------------------------------------------------------------------------------------
 // Higgsfield API
@@ -210,6 +357,55 @@ async function upload(file) {
   return ticket.public_url;
 }
 
+// Uploads an anchor, or stands in for one that a dry run hasn't generated yet.
+async function uploadAnchor(name) {
+  const file = anchorFile(name);
+  if (existsSync(file)) return upload(file);
+  if (DRY) return `dry-run://${path.basename(file)}`;
+  throw new Error(`Missing anchor ${path.relative(ROOT, file)} — run the frames step first.`);
+}
+
+// A missing anchor that was uploaded before is restored byte-exact from its newest upload (checked
+// against the recorded hash) instead of being generated and paid for again. Older uploads of the
+// same file are never used: they hold an earlier version the clips weren't made from.
+async function restoreFromUpload(file) {
+  const target = path.resolve(file);
+  const [newest] = Object.entries(manifest.uploads)
+    .filter(([, entry]) => path.resolve(ROOT, entry.file.replaceAll('\\', '/')) === target)
+    .sort(([, a], [, b]) => b.at - a.at);
+  if (!newest) return false;
+  const [hash, entry] = newest;
+  try {
+    const res = await fetch(entry.url);
+    if (!res.ok) return false;
+    const bytes = Buffer.from(await res.arrayBuffer());
+    if (sha256(bytes) !== hash) return false;
+    writeFileSync(file, bytes);
+    log(`restored ${path.relative(ROOT, file)} from its last upload`);
+    return true;
+  } catch {
+    return false; // expired or unreachable: generate it instead
+  }
+}
+
+// Prices a request without submitting it. The price doesn't depend on the images, so dry-run
+// placeholders are swapped for a syntactically valid URL.
+let estimatedCredits = 0;
+async function estimate(endpoint, input) {
+  const priced = JSON.parse(
+    JSON.stringify(input, (_, value) =>
+      typeof value === 'string' && value.startsWith('dry-run://') ? `https://example.com/${value.slice(10)}` : value,
+    ),
+  );
+  try {
+    const res = await api('POST', `estimate/${endpoint}`, priced);
+    estimatedCredits += Number(res.credits) || 0;
+    return `≈ ${res.credits} credits / $${res.usd}`;
+  } catch (err) {
+    return `no estimate: ${err.message.slice(0, 120)}`;
+  }
+}
+
 const TERMINAL = new Set(['completed', 'failed', 'nsfw', 'canceled', 'cancelled']);
 
 // Submits (or resumes) one generation and returns its output URL.
@@ -219,7 +415,7 @@ async function generate(key, endpoint, input) {
 
   if (!reusable) {
     if (DRY) {
-      log(`[dry-run] would submit ${key} → ${endpoint}`);
+      log(`[dry-run] would submit ${key} → ${endpoint} (${await estimate(endpoint, input)})`);
       console.log(JSON.stringify({ ...input, prompt: `${input.prompt.slice(0, 90)}…` }, null, 2));
       return null;
     }
@@ -274,7 +470,7 @@ async function download(url, file) {
 }
 
 // ---------------------------------------------------------------------------------------------
-// Step 1 + 2: anchor stills
+// Step 1: anchor stills
 // ---------------------------------------------------------------------------------------------
 
 // Generates an image once and returns the downloaded file. Re-runs reuse the download, so
@@ -293,6 +489,7 @@ async function generatedImage(key, input) {
 async function frameIdle() {
   const out = fileFor('frame-idle');
   if (existsSync(out) && !FORCE.has('frame-idle')) return out;
+  if (!FORCE.has('frame-idle') && (await restoreFromUpload(out))) return out;
 
   const { width: w, height: h } = await sharp(REFERENCE).metadata();
   const W = Math.round((h * 16) / 9 / 2) * 2;
@@ -423,21 +620,25 @@ async function locateReference(raw, rw, rh, w, h) {
   return best;
 }
 
-async function frameBoard(idleFrame) {
-  const out = fileFor('frame-board');
-  if (existsSync(out) && !FORCE.has('frame-board')) return out;
+// One generated anchor still (see STILLS), stored at master size.
+async function still({ key, prompt, refs }) {
+  const out = fileFor(key);
+  if (existsSync(out) && !FORCE.has(key)) return out;
+  if (!FORCE.has(key) && (await restoreFromUpload(out))) return out;
 
-  const raw = await generatedImage('frame-board', {
-    prompt: PROMPTS.board,
-    image_urls: [await upload(idleFrame)],
+  const imageUrls = [];
+  for (const ref of refs) imageUrls.push(await uploadAnchor(ref));
+  const raw = await generatedImage(key, {
+    prompt: PROMPTS[prompt],
+    image_urls: imageUrls,
     aspect_ratio: '16:9',
     resolution: '4k',
     quality: 'high',
     enhance_prompt: false,
   });
   if (!raw) return null;
-  await sharp(raw).resize(3840, 2160, { fit: 'cover' }).removeAlpha().png().toFile(out);
-  log(`wrote ${path.relative(ROOT, out)} (3840×2160)`);
+  await sharp(raw).resize(MASTER.width, MASTER.height, { fit: 'cover' }).removeAlpha().png().toFile(out);
+  log(`wrote ${path.relative(ROOT, out)} (${MASTER.width}×${MASTER.height})`);
   return out;
 }
 
@@ -447,22 +648,24 @@ function extension(url, fallback) {
 }
 
 // ---------------------------------------------------------------------------------------------
-// Step 3: videos
+// Step 2: videos
 // ---------------------------------------------------------------------------------------------
 
-async function videos(frames) {
+async function videos() {
+  // A clip with parts is generated as its parts.
+  const renders = clips.flatMap((clip) => clip.parts ?? [clip]);
   const urls = {};
-  for (const [name, file] of Object.entries(frames)) urls[name] = await upload(file);
+  for (const name of new Set(renders.flatMap((r) => [r.first, r.last]))) urls[name] = await uploadAnchor(name);
 
   const results = await Promise.allSettled(
-    CLIPS.map(async (clip) => {
-      const raw = path.join(RAW, `${clip.key}.mp4`);
-      if (existsSync(raw) && !FORCE.has(clip.key)) return raw;
-      const url = await generate(clip.key, VIDEO_ENDPOINT, {
-        prompt: PROMPTS[clip.key],
-        image_url: urls[clip.first],
-        last_image_url: urls[clip.last],
-        duration: clip.seconds,
+    renders.map(async (render) => {
+      const raw = path.join(RAW, `${render.key}.mp4`);
+      if (existsSync(raw) && !FORCE.has(render.key)) return raw;
+      const url = await generate(render.key, VIDEO_ENDPOINT, {
+        prompt: PROMPTS[render.key],
+        image_url: urls[render.first],
+        last_image_url: urls[render.last],
+        duration: render.seconds,
         sound: 'off',
       });
       return url ? download(url, raw) : null;
@@ -472,10 +675,14 @@ async function videos(frames) {
   for (const f of failed) console.error(`✗ ${f.reason.message}`);
   if (failed.length) throw new Error(`${failed.length} video(s) failed; finished ones are cached — re-run to retry.`);
 
-  for (const clip of CLIPS.filter((c) => c.splice)) {
+  for (const clip of clips.filter((c) => c.splice)) {
     const { key, seconds } = clip.splice;
     const raw = path.join(RAW, `${key}.mp4`);
     if (existsSync(raw) && !FORCE.has(key)) continue;
+    if (DRY && !existsSync(path.join(RAW, `${clip.key}.mp4`))) {
+      log(`[dry-run] would splice ${key} into ${clip.key} once ${clip.key} exists`);
+      continue;
+    }
     const url = await generate(key, VIDEO_ENDPOINT, {
       prompt: PROMPTS[key],
       image_url: await upload(await spliceFrame(clip)),
@@ -523,7 +730,7 @@ async function splicedSource(clip, fps) {
 }
 
 // ---------------------------------------------------------------------------------------------
-// Step 4: anchor + encode
+// Step 3: anchor + encode
 // ---------------------------------------------------------------------------------------------
 
 function ffmpeg(args, { quiet = true } = {}) {
@@ -552,108 +759,209 @@ async function probe(file) {
 //   some ffmpeg builds.
 // - No st()/ld() registers: blend runs slice-threaded and the registers are shared between
 //   threads, which scrambles the weights.
+// - The per-pixel expression is slow at 4K, so every blend is `enable`d only for the frames
+//   where its weight isn't zero; everywhere else the clip passes through untouched.
 const blendExpr = (weight) => {
   const w = `clip(${weight},0,1)`;
   return `A+(B-A)*${w}*${w}*(3-2*${w})`;
 };
 
-async function encode(frames) {
-  const masters = {};
+// Lens pulses: each [center s, half-width s, strength 0..1] eases the picture into a blurred copy of
+// itself and back along a smooth bump, which reads as the lens hunting for focus.
+const FOCUS_SIGMA = 18;
+const focusExpr = (pulses) => {
+  const weight = pulses.map(([at, width, strength]) => `${strength}*pow(max(0,1-pow((T-${at})/${width},2)),2)`).join('+');
+  return `A+(B-A)*clip(${weight},0,1)`;
+};
+const focusSpan = (pulses) =>
+  `between(t,${Math.min(...pulses.map(([at, width]) => at - width)).toFixed(3)},${Math.max(...pulses.map(([at, width]) => at + width)).toFixed(3)})`;
+
+// An anchor still at master size, re-made whenever its source is newer.
+async function masterStill(name) {
   const { width, height } = MASTER;
-  for (const clip of CLIPS) {
-    masters[clip.key] = path.join(PROCESSED, `${clip.key}-master.mp4`);
-    if (ONLY_CLIPS && !ONLY_CLIPS.has(clip.key)) continue;
-    let source = path.join(RAW, `${clip.key}.mp4`);
-    if (!existsSync(source)) throw new Error(`Missing ${path.relative(ROOT, source)} — run the videos step first.`);
-    if (clip.splice) source = await splicedSource(clip, (await probe(source)).fps);
-    const { width: sw, height: sh, fps, frames: count } = await probe(source);
-    const lastIndex = count - 1;
-    const head = Math.max(1, Math.round(clip.head * fps));
-    const tail = Math.max(1, Math.round(clip.tail * fps));
+  const source = anchorFile(name);
+  const file = path.join(PROCESSED, `${name}-${width}x${height}.png`);
+  if (!existsSync(file) || statSync(file).mtimeMs < statSync(source).mtimeMs) {
+    await sharp(source).resize(width, height, { fit: 'cover' }).png().toFile(file);
+  }
+  return file;
+}
 
-    const anchor = async (name) => {
-      const file = path.join(PROCESSED, `${name}-${width}x${height}.png`);
-      if (!existsSync(file)) await sharp(frames[name]).resize(width, height, { fit: 'cover' }).png().toFile(file);
-      return file;
-    };
-    const still = (i) => `[${i}:v]fps=${fps},setpts=PTS-STARTPTS,format=yuv444p,setsar=1[s${i}]`;
-    const at = (frame) => (frame / fps).toFixed(6);
+// Eases the first `head` and last `tail` seconds of a clip onto its exact anchor stills, after
+// trimming it and adding its focus pulses.
+async function pin(source, spec, out) {
+  const { width: sw, height: sh, fps, frames: rendered } = await probe(source);
+  const count = spec.trim ? Math.min(rendered, Math.round(spec.trim * fps)) : rendered;
+  const lastIndex = count - 1;
+  const head = Math.max(1, Math.round(spec.head * fps));
+  const tail = Math.max(1, Math.round(spec.tail * fps));
+  const still = (i) => `[${i}:v]fps=${fps},setpts=PTS-STARTPTS,format=yuv444p,setsar=1[s${i}]`;
+  const at = (frame) => (frame / fps).toFixed(6);
+  const trim = count < rendered ? `trim=end_frame=${count},` : '';
+  const video = spec.focus
+    ? [
+        `[0:v]fps=${fps},${trim}setpts=PTS-STARTPTS,${NORMALIZE},split[sharp][soft]`,
+        `[soft]gblur=sigma=${FOCUS_SIGMA}:enable='${focusSpan(spec.focus)}'[blurred]`,
+        `[sharp][blurred]blend=all_expr='${focusExpr(spec.focus)}':enable='${focusSpan(spec.focus)}'[v]`,
+      ]
+    : [`[0:v]fps=${fps},${trim}setpts=PTS-STARTPTS,${NORMALIZE}[v]`];
 
-    const master = path.join(PROCESSED, `${clip.key}-master.mp4`);
-    log(`${clip.key}: ${sw}×${sh} @ ${fps} fps, ${count} frames → pinning ${head}+${tail} frames to anchors`);
-    await ffmpeg([
-      '-i', source,
-      '-loop', '1', '-framerate', String(fps), '-i', await anchor(clip.first),
-      '-loop', '1', '-framerate', String(fps), '-i', await anchor(clip.last),
-      '-filter_complex', [
-        `[0:v]fps=${fps},setpts=PTS-STARTPTS,${NORMALIZE}[v]`,
-        still(1),
-        still(2),
-        `[v][s1]blend=all_expr='${blendExpr(`1-T/${at(head)}`)}':shortest=1[h]`,
-        `[h][s2]blend=all_expr='${blendExpr(`(T-${at(lastIndex - tail)})/${at(tail)}+0.0001`)}':shortest=1[t]`,
-        // The loop's last frame equals its first, so drop it to avoid a one-frame stall at the seam.
-        `[t]${clip.loop ? `trim=end_frame=${lastIndex},setpts=PTS-STARTPTS,` : ''}format=yuv420p[out]`,
-      ].join(';'),
-      '-map', '[out]', '-an',
-      '-c:v', 'libx264', '-preset', 'medium', '-crf', '12',
-      master,
-    ]);
+  log(`${spec.key}: ${sw}×${sh} @ ${fps} fps, ${count < rendered ? `${count} of ${rendered}` : count} frames → pinning ${head}+${tail} frames to anchors${spec.focus ? `, ${spec.focus.length} focus pulses` : ''}`);
+  await ffmpeg([
+    '-i', source,
+    '-loop', '1', '-framerate', String(fps), '-i', await masterStill(spec.first),
+    '-loop', '1', '-framerate', String(fps), '-i', await masterStill(spec.last),
+    '-filter_complex', [
+      ...video,
+      still(1),
+      still(2),
+      `[v][s1]blend=all_expr='${blendExpr(`1-T/${at(head)}`)}':shortest=1:enable='lte(t,${at(head)})'[h]`,
+      `[h][s2]blend=all_expr='${blendExpr(`(T-${at(lastIndex - tail)})/${at(tail)}+0.0001`)}':shortest=1:enable='gte(t,${at(lastIndex - tail)})'[t]`,
+      // The loop's last frame equals its first, so drop it to avoid a one-frame stall at the seam.
+      `[t]${spec.loop ? `trim=end_frame=${lastIndex},setpts=PTS-STARTPTS,` : ''}format=yuv420p[out]`,
+    ].join(';'),
+    '-map', '[out]', '-an',
+    '-c:v', 'libx264', '-preset', 'medium', '-crf', '12',
+    out,
+  ]);
+  return out;
+}
 
-    const variants = {
-      landscape: 'scale=1920:1080:flags=lanczos',
-      portrait: 'crop=trunc(ih*9/32)*2:ih,scale=1080:1920:flags=lanczos',
-    };
-    for (const [variant, filter] of Object.entries(variants)) {
-      const base = path.join(OUT, `${clip.key}-${variant}`);
-      await ffmpeg(['-i', master, '-vf', filter, '-an',
-        '-c:v', 'libx264', '-preset', 'slow', '-crf', '21', '-profile:v', 'high', '-pix_fmt', 'yuv420p',
-        '-movflags', '+faststart', `${base}.mp4`]);
-      await ffmpeg(['-i', master, '-vf', filter, '-an',
-        '-c:v', 'libvpx-vp9', '-b:v', '0', '-crf', '33', '-row-mt', '1', '-deadline', 'good', '-cpu-used', '2',
-        '-pix_fmt', 'yuv420p', `${base}.webm`]);
-      log(`wrote public/videos/${clip.key}-${variant}.{mp4,webm}`);
+// Joins pinned parts. Each part ends on the exact still the next one starts on, so that
+// duplicate frame is dropped at every seam.
+async function join(pieces, out) {
+  const infos = [];
+  for (const piece of pieces) infos.push(await probe(piece));
+  const fps = infos[0].fps;
+  const chains = pieces.map((_, i) => {
+    const trim = i < pieces.length - 1 ? `trim=end_frame=${infos[i].frames - 1},` : '';
+    return `[${i}:v]${trim}fps=${fps},setpts=PTS-STARTPTS,setsar=1[p${i}]`;
+  });
+  const inputs = pieces.map((_, i) => `[p${i}]`).join('');
+  await ffmpeg([
+    ...pieces.flatMap((piece) => ['-i', piece]),
+    '-filter_complex', [...chains, `${inputs}concat=n=${pieces.length}:v=1:a=0,format=yuv420p[out]`].join(';'),
+    '-map', '[out]', '-an', '-c:v', 'libx264', '-preset', 'medium', '-crf', '12',
+    out,
+  ]);
+  log(`joined ${pieces.map((p) => path.basename(p)).join(' + ')} → ${path.relative(ROOT, out)}`);
+  return out;
+}
+
+async function webVariants(key, master) {
+  const variants = {
+    landscape: 'scale=1920:1080:flags=lanczos',
+    portrait: 'crop=trunc(ih*9/32)*2:ih,scale=1080:1920:flags=lanczos',
+  };
+  for (const [variant, filter] of Object.entries(variants)) {
+    const base = path.join(OUT, `${key}-${variant}`);
+    await ffmpeg(['-i', master, '-vf', filter, '-an',
+      '-c:v', 'libx264', '-preset', 'slow', '-crf', '21', '-profile:v', 'high', '-pix_fmt', 'yuv420p',
+      '-movflags', '+faststart', `${base}.mp4`]);
+    await ffmpeg(['-i', master, '-vf', filter, '-an',
+      '-c:v', 'libvpx-vp9', '-b:v', '0', '-crf', '33', '-row-mt', '1', '-deadline', 'good', '-cpu-used', '2',
+      '-pix_fmt', 'yuv420p', `${base}.webm`]);
+    log(`wrote public/videos/${key}-${variant}.{mp4,webm}`);
+  }
+}
+
+// Writes one frame of a master clip as a web JPEG ('last' or a frame index).
+async function frameJpeg(master, index, file, { width, height, quality }) {
+  const frame = index === 'last' ? (await probe(master)).frames - 1 : index;
+  const tmp = path.join(PROCESSED, `${path.basename(file, '.jpg')}-frame.png`);
+  await ffmpeg(['-i', master, '-vf', `select=eq(n\\,${frame})`, '-vsync', '0', '-frames:v', '1', tmp]);
+  await sharp(tmp).resize(width, height, { fit: 'cover' }).jpeg({ quality, mozjpeg: true }).toFile(file);
+  rmSync(tmp);
+}
+
+async function encode() {
+  const master = (key) => path.join(PROCESSED, `${key}-master.mp4`);
+  const rawSource = (key) => {
+    const file = path.join(RAW, `${key}.mp4`);
+    if (!existsSync(file)) throw new Error(`Missing ${path.relative(ROOT, file)} — run the videos step first.`);
+    return file;
+  };
+
+  const encoded = clips.filter((clip) => !ONLY_CLIPS || ONLY_CLIPS.has(clip.key));
+  for (const clip of encoded) {
+    if (clip.parts) {
+      const pieces = [];
+      for (const part of clip.parts) {
+        pieces.push(await pin(rawSource(part.key), part, path.join(PROCESSED, `${part.key}-pinned.mp4`)));
+      }
+      await join(pieces, master(clip.key));
+    } else {
+      let source = rawSource(clip.key);
+      if (clip.splice) source = await splicedSource(clip, (await probe(source)).fps);
+      await pin(source, clip, master(clip.key));
     }
+    await webVariants(clip.key, master(clip.key));
   }
 
-  // Poster frames: the idle anchor, full frame and the centered portrait crop.
-  await sharp(frames['frame-idle']).resize(1920, 1080, { fit: 'cover' }).jpeg({ quality: 84, mozjpeg: true })
-    .toFile(path.join(OUT, 'idle-poster-landscape.jpg'));
-  const { width: iw, height: ih } = await sharp(frames['frame-idle']).metadata();
-  const pw = Math.round((ih * 9) / 16 / 2) * 2;
-  await sharp(frames['frame-idle']).extract({ left: Math.round((iw - pw) / 2), top: 0, width: pw, height: ih })
-    .jpeg({ quality: 84, mozjpeg: true }).toFile(path.join(OUT, 'idle-poster-portrait.jpg'));
+  if (encoded.some((clip) => clip.sequence === 'projects')) {
+    // Poster frames: the idle anchor, full frame and the centered portrait crop.
+    const idle = fileFor('frame-idle');
+    await sharp(idle).resize(1920, 1080, { fit: 'cover' }).jpeg({ quality: 84, mozjpeg: true })
+      .toFile(path.join(OUT, 'idle-poster-landscape.jpg'));
+    const { width: iw, height: ih } = await sharp(idle).metadata();
+    const pw = Math.round((ih * 9) / 16 / 2) * 2;
+    await sharp(idle).extract({ left: Math.round((iw - pw) / 2), top: 0, width: pw, height: ih })
+      .jpeg({ quality: 84, mozjpeg: true }).toFile(path.join(OUT, 'idle-poster-portrait.jpg'));
 
-  // board-end.jpg is the reveal's actual last frame; the Three.js board is built on it.
-  const { frames: revealFrames } = await probe(masters.reveal);
-  const lastFrame = path.join(PROCESSED, 'reveal-last-frame.png');
-  await ffmpeg(['-i', masters.reveal, '-vf', `select=eq(n\\,${revealFrames - 1})`, '-vsync', '0', '-frames:v', '1', lastFrame]);
-  await sharp(lastFrame).resize(2560, 1440, { fit: 'cover' }).jpeg({ quality: 90, mozjpeg: true })
-    .toFile(path.join(OUT, 'board-end.jpg'));
-  rmSync(lastFrame);
-  log('wrote public/videos/idle-poster-*.jpg and board-end.jpg');
+    // board-end.jpg is the reveal's actual last frame; the Three.js board is built on it.
+    await frameJpeg(master('reveal'), 'last', path.join(OUT, 'board-end.jpg'), { width: 2560, height: 1440, quality: 90 });
+    log('wrote public/videos/idle-poster-*.jpg and board-end.jpg');
+  }
+
+  if (encoded.some((clip) => clip.sequence === 'departments')) {
+    // screen-end.jpg: the reveal's last frame (the CRT with the start-up screen), shown instead of
+    // the clip without motion. screen-off.jpg: the return's first frame, its poster.
+    const size = { width: 1920, height: 1080, quality: 86 };
+    const stillsFrom = [
+      ['departments', 'last', 'screen-end.jpg'],
+      ['departments-return', 0, 'screen-off.jpg'],
+    ];
+    for (const [key, frame, name] of stillsFrom) {
+      if (!existsSync(master(key))) {
+        log(`skipped ${name}: ${key} has not been encoded yet`);
+        continue;
+      }
+      await frameJpeg(master(key), frame, path.join(OUT, name), size);
+      log(`wrote public/videos/${name}`);
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------------------------
 
 async function main() {
+  const unknown = [...SEQUENCES].filter((name) => !CLIPS.some((c) => c.sequence === name));
+  if (unknown.length) throw new Error(`Unknown sequence ${unknown.join(', ')} — use projects and/or departments.`);
   if (!existsSync(REFERENCE)) throw new Error(`Missing reference photo at ${path.relative(ROOT, REFERENCE)}`);
-  const frames = { 'frame-idle': fileFor('frame-idle'), 'frame-board': fileFor('frame-board') };
-
-  if (ONLY.has('frames')) {
-    const idle = await frameIdle();
-    if (idle) await frameBoard(idle);
+  for (const [name, file] of Object.entries(SOURCES)) {
+    if (stills.some((s) => s.refs.includes(name)) && !existsSync(file)) {
+      throw new Error(`Missing source image ${path.relative(ROOT, file)}`);
+    }
   }
-  const haveFrames = Object.values(frames).every((f) => existsSync(f));
+
+  // Stills run in order: each one may use the ones before it as references.
+  if (ONLY.has('frames')) {
+    await frameIdle();
+    for (const spec of stills) await still(spec);
+  }
+  const haveFrames = ['frame-idle', ...stills.map((s) => s.key)].every((name) => existsSync(fileFor(name)));
 
   if (ONLY.has('videos')) {
-    if (!haveFrames) throw new Error('Anchor stills are missing — run the frames step first.');
-    await videos(frames);
+    if (!haveFrames && !DRY) throw new Error('Anchor stills are missing — run the frames step first.');
+    await videos();
   }
   if (ONLY.has('encode') && !DRY) {
     if (!haveFrames) throw new Error('Anchor stills are missing — run the frames step first.');
-    await encode(frames);
+    await encode();
   }
-  log(DRY ? 'dry run finished — nothing was submitted.' : 'done.');
+  log(DRY
+    ? `dry run finished — nothing was submitted. Estimated cost: ≈ ${estimatedCredits.toFixed(2)} credits.`
+    : 'done.');
 }
 
 main().catch((err) => {

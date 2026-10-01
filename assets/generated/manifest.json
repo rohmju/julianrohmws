@@ -97,6 +97,178 @@
         "sound": "off"
       },
       "output": "https://d3u0tzju9qaucj.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/847b3f38-d353-4335-aa25-9388d91a0a74.mp4"
+    },
+    "frame-desk": {
+      "endpoint": "marketing-studio/image",
+      "request_id": "b7dfa3c1-92ea-4443-9ae3-8076555825b6",
+      "status_url": "https://platform.higgsfield.ai/requests/b7dfa3c1-92ea-4443-9ae3-8076555825b6/status",
+      "status": "completed",
+      "submitted_at": "2026-09-30T07:12:04.453Z",
+      "input": {
+        "prompt": "Photorealistic still frame from the same film as the first reference image: the same dim\nphoto studio, the same cool blue-grey color grade, the same soft key light, the same subtle film\ngrain and gentle vignette, the same lens and exposure. The camera has turned to the right, away from\nthe mottled backdrop, and now looks into a dark side of the studio at standing eye level. About three\nmeters away an old, worn writing desk of dark wood stands on the grey concrete floor in front of\nheavy black studio curtains that fall into deep shadow. The whole desk is visible and spans roughly\nthe middle half of the frame width. On the desk sits a mid-1990s beige personal computer: a slightly\nyellowed beige 14-inch CRT monitor with a thick bezel stands on a flat beige desktop case with a\n3.5-inch floppy drive and a small green power light; in front of it a beige keyboard, a ball mouse on\na worn mouse pad, a few black 3.5-inch floppy disks and a chipped coffee mug. The monitor is switched\non and shows exactly the Windows 95 start-up screen from the second reference image: the sky-blue\ncloud background, the four-colored waving Windows flag logo and the words Microsoft Windows 95. Its\ncool glow spills softly onto the desk, the keyboard and the wood grain; everything else stays dim.\nThe monitor screen sits exactly in the center of the frame, level and seen straight on. Nothing else\nin the room: no people, no hands, no chair, no lamps, no windows, no posters, no text except on the\nscreen.",
+        "image_urls": [
+          "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/58a5961b-022a-40c1-9293-73c5bcc4ab25.png",
+          "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/d78298df-dda5-43b5-b39d-022311ce260a.png"
+        ],
+        "aspect_ratio": "16:9",
+        "resolution": "4k",
+        "quality": "high",
+        "enhance_prompt": false
+      },
+      "output": "https://d3u0tzju9qaucj.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/f4f37923-6456-47e5-a27b-c139e5b11987.png",
+      "file": "assets\\generated\\raw\\frame-desk.png"
+    },
+    "frame-screen": {
+      "endpoint": "marketing-studio/image",
+      "request_id": "ef023672-e06a-47a9-b3dc-fd3d623c43d0",
+      "status_url": "https://platform.higgsfield.ai/requests/ef023672-e06a-47a9-b3dc-fd3d623c43d0/status",
+      "status": "completed",
+      "submitted_at": "2026-09-30T07:13:53.731Z",
+      "input": {
+        "prompt": "Photorealistic extreme close-up still from the same film as the first reference image: the\nsame beige 1990s CRT monitor from that desk, the same dim studio light, the same cool blue-grey\ncolor grade, the same fine film grain. The camera is now very close to and perfectly frontal to the\nmonitor. Its slightly bulging glass screen fills almost the full height of the 16:9 frame and is\nexactly centered; the yellowed beige plastic bezel shows as a thin strip above and below the screen\nand as wider bands on the left and right that fall off into the dark studio at the frame edges. The\nscreen shows the complete Windows 95 start-up screen from the second reference image, exactly as it\nis and not cropped: the sky-blue background with soft white clouds, the four-colored waving Windows\nflag logo, the words Microsoft Windows 95, the small Microsoft wordmark in the top right corner and\nthe thin blue progress bar along the bottom edge. Authentic CRT character: fine horizontal scanlines\nand a subtle RGB phosphor dot pattern, a soft glow and gentle bloom around the bright areas, slightly\ndarker rounded screen corners, a faint reflection of the dark studio on the curved glass and a few\nspecks of dust. The picture on the screen is sharp and in focus. No people, no hands, no reflection\nof a person.",
+        "image_urls": [
+          "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/bbd5cb6c-4d3f-47e2-b09e-67fa545c4f6d.png",
+          "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/d78298df-dda5-43b5-b39d-022311ce260a.png"
+        ],
+        "aspect_ratio": "16:9",
+        "resolution": "4k",
+        "quality": "high",
+        "enhance_prompt": false
+      },
+      "output": "https://d3u0tzju9qaucj.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/0a61fa6d-3bd1-4f9a-872e-01328ccd9317.png",
+      "file": "assets\\generated\\raw\\frame-screen.png"
+    },
+    "frame-desk-off": {
+      "endpoint": "marketing-studio/image",
+      "request_id": "ce1c390a-3e49-4cbd-b54d-7b5a285b9e7f",
+      "status_url": "https://platform.higgsfield.ai/requests/ce1c390a-3e49-4cbd-b54d-7b5a285b9e7f/status",
+      "status": "completed",
+      "submitted_at": "2026-09-30T07:15:42.332Z",
+      "input": {
+        "prompt": "Edit this photograph. Keep exactly the same framing, camera position, desk, computer,\nkeyboard, mouse, floppy disks, mug, curtains, light, color grade and film grain. Change only one\nthing: the CRT monitor is now switched off. Its glass screen is dark charcoal grey with a faint\nreflection, no picture, no logo and no glow, and the cool light it cast onto the desk and keyboard is\ngone, so the desk is lit only by the dim studio light. Everything else stays exactly the same.",
+        "image_urls": [
+          "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/bbd5cb6c-4d3f-47e2-b09e-67fa545c4f6d.png"
+        ],
+        "aspect_ratio": "16:9",
+        "resolution": "4k",
+        "quality": "high",
+        "enhance_prompt": false
+      },
+      "output": "https://d3u0tzju9qaucj.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/04d3374d-4953-4d13-9d75-aa2f090285cb.png",
+      "file": "assets\\generated\\raw\\frame-desk-off.png"
+    },
+    "frame-screen-off": {
+      "endpoint": "marketing-studio/image",
+      "request_id": "16c963d9-3b88-4cd6-9523-0ad5fc90cce7",
+      "status_url": "https://platform.higgsfield.ai/requests/16c963d9-3b88-4cd6-9523-0ad5fc90cce7/status",
+      "status": "completed",
+      "submitted_at": "2026-09-30T07:17:30.757Z",
+      "input": {
+        "prompt": "Edit this photograph. Keep exactly the same framing, camera position, monitor, bezel,\nlight, color grade and film grain. Change only one thing: the CRT monitor is now switched off. Its\ncurved glass screen is dark charcoal grey with a faint green-grey tint and shows only soft, dim\nreflections of the studio and a few specks of dust. No picture, no logo, no text, no scanlines and no\nglow on the screen, and the bezel is lit only by the dim studio light. Everything else stays exactly\nthe same.",
+        "image_urls": [
+          "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/3da28134-a113-4dc3-9101-9257d2105c66.png"
+        ],
+        "aspect_ratio": "16:9",
+        "resolution": "4k",
+        "quality": "high",
+        "enhance_prompt": false
+      },
+      "output": "https://d3u0tzju9qaucj.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/a1e7ce3d-1f96-4e25-a7e2-83775974aeb0.png",
+      "file": "assets\\generated\\raw\\frame-screen-off.png"
+    },
+    "departments-a": {
+      "endpoint": "kling-video/v3.0/4k/image-to-video",
+      "request_id": "e10ea84b-2c5c-4a77-9f94-da46c977c893",
+      "status_url": "https://platform.higgsfield.ai/requests/e10ea84b-2c5c-4a77-9f94-da46c977c893/status",
+      "status": "completed",
+      "submitted_at": "2026-09-30T07:21:30.454Z",
+      "input": {
+        "prompt": "One continuous shot, photorealistic and cinematic, in a dim photo studio with a cool\nblue-grey grade and fine film grain. There is exactly one person in the scene: the young man standing\ncentered in front of the mottled blue canvas backdrop with his arms crossed. He uncrosses his arms,\nwalks straight up to the camera, reaches out with both hands and grips it; the view jolts slightly\nas he lifts it and steps behind it, out of view. Now carried by him, handheld, the camera swings\nsmoothly to the right, away from the backdrop and across the dark studio curtains, and discovers an\nold dark wooden desk standing at the side of the studio with a beige 1990s computer on it, its CRT\nmonitor glowing with the Windows 95 start-up screen. The camera slows down, settles centered on the\nmonitor and holds still. Only this one person ever appears: no second person, no duplicate, no\nreflection of him.",
+        "image_url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/58a5961b-022a-40c1-9293-73c5bcc4ab25.png",
+        "last_image_url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/bbd5cb6c-4d3f-47e2-b09e-67fa545c4f6d.png",
+        "duration": 5,
+        "sound": "off"
+      },
+      "output": "https://d3u0tzju9qaucj.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/bde1689b-f1c1-4f9a-a943-d47fe64b470d.mp4"
+    },
+    "departments-b": {
+      "endpoint": "kling-video/v3.0/4k/image-to-video",
+      "request_id": "2a03806f-5baf-415c-b3cd-3dbcb988a14f",
+      "status_url": "https://platform.higgsfield.ai/requests/2a03806f-5baf-415c-b3cd-3dbcb988a14f/status",
+      "status": "completed",
+      "submitted_at": "2026-09-30T07:21:30.489Z",
+      "input": {
+        "prompt": "One continuous shot, photorealistic and cinematic, in a dim photo studio with a cool\nblue-grey grade and fine film grain. The handheld camera holds on the old wooden desk with the beige\n1990s computer for a brief beat, the CRT monitor glowing with the Windows 95 start-up screen. Then a\nviolent, extremely fast crash zoom straight into the monitor: the lens slams in, the whole image\nsmears with heavy radial motion blur and zoom streaks, overshoots slightly and falls completely out\nof focus into a soft glowing blur; the focus hunts, breathing soft and sharp twice, then snaps\nrazor-sharp onto the Windows 95 start-up screen, which now fills the frame between the beige bezel.\nThe camera comes to rest, perfectly still and frontal. No people, no hands.",
+        "image_url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/bbd5cb6c-4d3f-47e2-b09e-67fa545c4f6d.png",
+        "last_image_url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/3da28134-a113-4dc3-9101-9257d2105c66.png",
+        "duration": 4,
+        "sound": "off"
+      },
+      "output": "https://d3u0tzju9qaucj.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/df2f1960-0ac9-49bc-a2e4-6007b94ddca5.mp4"
+    },
+    "departments-return-b": {
+      "endpoint": "kling-video/v3.0/4k/image-to-video",
+      "request_id": "83d46d7a-ff18-4a2d-8965-44ae852adb88",
+      "status_url": "https://platform.higgsfield.ai/requests/83d46d7a-ff18-4a2d-8965-44ae852adb88/status",
+      "status": "completed",
+      "submitted_at": "2026-09-30T07:38:58.401Z",
+      "input": {
+        "prompt": "One continuous shot, photorealistic and cinematic, in a dim photo studio with\na cool blue-grey grade and fine film grain. The handheld camera looks at the old wooden desk with the\nswitched-off beige computer, then swings smoothly to the left, away from the desk and across the dark\nstudio curtains, until the mottled blue canvas backdrop in the middle of the studio is centered in\nthe frame. The camera is set down on its original spot and settles completely still. The studio is\nempty: no people, no hands, no shadows of people.",
+        "image_url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/f1c1f2aa-6e35-46f7-8ab2-f4f15dead54f.png",
+        "last_image_url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/64d2ac9e-402c-4207-9d23-4abbc273e96d.png",
+        "duration": 3,
+        "sound": "off"
+      },
+      "output": "https://d3u0tzju9qaucj.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/59d63c1a-8379-464a-a34d-0ad54cee3656.mp4"
+    },
+    "departments-return-a": {
+      "endpoint": "kling-video/v3.0/4k/image-to-video",
+      "request_id": "ee382a2b-8556-4d8c-b54c-262e4c8d6068",
+      "status_url": "https://platform.higgsfield.ai/requests/ee382a2b-8556-4d8c-b54c-262e4c8d6068/status",
+      "status": "completed",
+      "submitted_at": "2026-09-30T07:21:30.710Z",
+      "input": {
+        "prompt": "One continuous shot, photorealistic and cinematic, in a dim photo studio with\na cool blue-grey grade and fine film grain. The shot starts extremely close and frontal on the dark,\nswitched-off glass of an old beige CRT monitor. The handheld camera pulls back smoothly and steadily,\ngently easing out, revealing the whole monitor, the beige computer, the keyboard and the old dark\nwooden desk, and comes to rest. The monitor stays switched off and dark the whole time. No people, no\nhands.",
+        "image_url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/0876d71c-c5a0-41dc-b5ea-23db4bceee0e.png",
+        "last_image_url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/f1c1f2aa-6e35-46f7-8ab2-f4f15dead54f.png",
+        "duration": 3,
+        "sound": "off"
+      },
+      "output": "https://d3u0tzju9qaucj.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/b83c9f1c-33a9-4cc9-99db-3afc86e8b37f.mp4"
+    },
+    "frame-studio-empty": {
+      "endpoint": "marketing-studio/image",
+      "request_id": "eba110ad-dc1a-48fa-9533-8cba2473ba18",
+      "status_url": "https://platform.higgsfield.ai/requests/eba110ad-dc1a-48fa-9533-8cba2473ba18/status",
+      "status": "completed",
+      "submitted_at": "2026-09-30T07:36:44.654Z",
+      "input": {
+        "prompt": "Edit this photograph. Remove the young man completely, including his shadow on the\nfloor. Keep everything else exactly as it is: the same framing and camera position, the mottled blue\ncanvas backdrop, the black studio curtains, the grey concrete floor with its soft pool of light, the\nsame light, color grade and film grain. Where he stood, continue the backdrop fabric and the floor\nnaturally and seamlessly. The studio is empty: no people, no objects.",
+        "image_urls": [
+          "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/58a5961b-022a-40c1-9293-73c5bcc4ab25.png"
+        ],
+        "aspect_ratio": "16:9",
+        "resolution": "4k",
+        "quality": "high",
+        "enhance_prompt": false
+      },
+      "output": "https://d3u0tzju9qaucj.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/39c73529-9a2d-49a8-982d-d8966eb74049.png",
+      "file": "assets\\generated\\raw\\frame-studio-empty.png"
+    },
+    "departments-return-c": {
+      "endpoint": "kling-video/v3.0/4k/image-to-video",
+      "request_id": "b9f89608-8d67-4885-92bc-f0703bc59325",
+      "status_url": "https://platform.higgsfield.ai/requests/b9f89608-8d67-4885-92bc-f0703bc59325/status",
+      "status": "completed",
+      "submitted_at": "2026-09-30T07:38:58.571Z",
+      "input": {
+        "prompt": "Locked-off static camera, no camera movement at all. Photorealistic cinematic\nfootage in a dim photo studio with a cool blue-grey grade and fine film grain, framing the mottled\nblue canvas backdrop in the middle of the studio. The young man walks into the frame from the right\nedge, fully solid and real from the first moment, crosses the floor in front of the backdrop to the\ncenter, turns to face the camera and crosses his arms, ending in exactly the original pose: standing\ncentered, arms crossed, looking calmly into the lens. There is exactly one person in the scene: no\nsecond person, no duplicate, no reflection of him.",
+        "image_url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/64d2ac9e-402c-4207-9d23-4abbc273e96d.png",
+        "last_image_url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/58a5961b-022a-40c1-9293-73c5bcc4ab25.png",
+        "duration": 4,
+        "sound": "off"
+      },
+      "output": "https://d3u0tzju9qaucj.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/a64c7bf8-189c-4cdb-b9fa-1ee25bc8b771.mp4"
     }
   },
   "uploads": {
@@ -112,8 +284,8 @@
     },
     "fe45d675b03440b18c4d674533087bff830d8f90590ade3b1a13d7a5a0b74e32": {
       "file": "assets\\generated\\frame-idle.png",
-      "url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/032bb497-7ac9-45ce-a5e9-83633c0a2506.png",
-      "at": 1790421270137
+      "url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/58a5961b-022a-40c1-9293-73c5bcc4ab25.png",
+      "at": 1790752324066
     },
     "3cb8195127b5401dba5a90bab95de8a5868fbcce9f99264f477ffd26048d8eda": {
       "file": "assets\\generated\\frame-board.png",
@@ -124,6 +296,36 @@
       "file": "assets\\generated\\reveal-b-start.png",
       "url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/fe6a8096-2866-4b4d-a58e-359985f1e10b.png",
       "at": 1790421511841
+    },
+    "8ba30cd05841a9b98a2aa178444a8aae3b229122adaebd8e1951e41af37cda21": {
+      "file": "assets\\source\\win95-boot.png",
+      "url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/d78298df-dda5-43b5-b39d-022311ce260a.png",
+      "at": 1790752324292
+    },
+    "c0bb0da890f795f17c4d1e3467c313504a9d6317ba3affb9b73ae1f1002bcd46": {
+      "file": "assets\\generated\\frame-desk.png",
+      "url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/bbd5cb6c-4d3f-47e2-b09e-67fa545c4f6d.png",
+      "at": 1790752433545
+    },
+    "0dde612d92a821c28d98d98af66c457f386383c0691e546359c1d923eb94e697": {
+      "file": "assets\\generated\\frame-screen.png",
+      "url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/3da28134-a113-4dc3-9101-9257d2105c66.png",
+      "at": 1790752650581
+    },
+    "2307dca0f66d5155da757d260d1454bfbfbff8c4e4328f21be9f8a309ba5f811": {
+      "file": "assets\\generated\\frame-screen-off.png",
+      "url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/0876d71c-c5a0-41dc-b5ea-23db4bceee0e.png",
+      "at": 1790752888949
+    },
+    "80f43fdb598589492cd7425568f8c1945ee3449e3694f1a2a9b63b635fb73388": {
+      "file": "assets\\generated\\frame-desk-off.png",
+      "url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/f1c1f2aa-6e35-46f7-8ab2-f4f15dead54f.png",
+      "at": 1790752890026
+    },
+    "c1b4925d6c7f32027ebb0b0515be92a398f37aa634d7ddad5e2bcfabb7adfbf4": {
+      "file": "assets\\generated\\frame-studio-empty.png",
+      "url": "https://d3snorpfx4xhv8.cloudfront.net/e0b200b3-a1bf-4e72-80a2-afc9bd8a29c7/64d2ac9e-402c-4207-9d23-4abbc273e96d.png",
+      "at": 1790753938220
     }
   }
 }

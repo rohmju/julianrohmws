@@ -194,12 +194,24 @@ const Flag = () => (
   </svg>
 )
 
-const Mine = ({ crossed = false }) => (
-  <svg width="13" height="13" viewBox="0 0 13 13" aria-hidden="true">
-    <image href={mineFace} width="13" height="13" preserveAspectRatio="xMidYMid slice" />
-    {crossed && <path stroke="#ff0000" strokeWidth="1.5" d="M1 1l11 11M12 1L1 12" />}
-  </svg>
-)
+// "bazuki=true" in the MS-DOS Prompt swaps the bomb for a face.
+const Mine = ({ crossed = false }) => {
+  const bazuki = useShared('bazuki')
+  return (
+    <svg width="13" height="13" viewBox="0 0 13 13" shapeRendering={bazuki ? undefined : 'crispEdges'} aria-hidden="true">
+      {bazuki ? (
+        <image href={mineFace} width="13" height="13" preserveAspectRatio="xMidYMid slice" />
+      ) : (
+        <>
+          <path d="M6 0h1v13H6zM0 6h13v1H0zM2 2h1v1H2zM10 2h1v1h-1zM2 10h1v1H2zM10 10h1v1h-1z" />
+          <circle cx="6.5" cy="6.5" r="4" />
+          <path fill="#fff" d="M4 4h2v2H4z" />
+        </>
+      )}
+      {crossed && <path stroke="#ff0000" strokeWidth="1.5" d="M1 1l11 11M12 1L1 12" />}
+    </svg>
+  )
+}
 
 function cellContent(cell) {
   if (cell.state === 'flagged') return <Flag />

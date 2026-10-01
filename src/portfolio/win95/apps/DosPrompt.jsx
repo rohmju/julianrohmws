@@ -87,6 +87,9 @@ export default function DosPrompt({ win }) {
         if (!args.length) return ['Required parameter missing']
         api.remove()
         return ['Access denied']
+      case 'bazuki=true': // unlocks the Minesweeper reskin
+        api.share('bazuki', true)
+        return []
       case 'exit':
         api.close(win.id)
         return null

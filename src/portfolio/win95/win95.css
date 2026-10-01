@@ -121,7 +121,7 @@
   inset: 0 0 28px;
   z-index: 0;
   overflow: hidden;
-  background: var(--teal) url('./wallpaper.png') center / cover no-repeat;
+  background: var(--teal) url('./wallpaper.jpg') center / cover no-repeat;
 }
 
 .w95-desktop__icons {

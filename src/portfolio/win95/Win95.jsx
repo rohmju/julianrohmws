@@ -16,6 +16,7 @@ import { gridSize, layoutIcons, nearestFreeCell } from './desktopGrid.js'
 import { buildFileSystem } from './fileSystem.js'
 import { screenScale, useDesktopScale } from './scale.js'
 import { playStartup } from './sounds.js'
+import FoxyJumpscare from '../../components/FoxyJumpscare.jsx'
 
 const TASKBAR_HEIGHT = 28
 const COMPACT_WIDTH = 640 // narrower screens open resizable windows maximized
@@ -106,6 +107,7 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
   const [context, setContext] = useState(null) // { x, y, items } of an open right-click menu
   const [shutDownOpen, setShutDownOpen] = useState(false)
   const [recent, setRecent] = useState([])
+  const [foxy, setFoxy] = useState(0) // bumped to play the Foxy jumpscare
   const [placed, setPlaced] = useState({}) // desktop icons' cells, once one has been dragged
   const scale = useDesktopScale()
   const [bounds, setBounds] = useState(() => ({ width: window.innerWidth / scale, height: window.innerHeight / scale - TASKBAR_HEIGHT }))
@@ -281,6 +283,7 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
       message,
       remove,
       contextMenu,
+      jumpscare: () => setFoxy((n) => n + 1),
       about: (product) => open('about', { product }, { key: `about:${product ?? 'Windows 95'}` }),
       notAvailable: (name) => message({ title: name, icon: 'info', text: `${name} is not available on this computer.` }),
       focus: (id) => dispatch({ type: 'focus', id }),
@@ -489,6 +492,7 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
           </div>
         )}
         {stage === 'off' && <div className="w95-crt-off" aria-hidden="true" />}
+        {stage === 'ready' && <FoxyJumpscare play={foxy} />}
       </section>
     </Win95Context.Provider>
   )

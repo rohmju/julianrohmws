@@ -27,7 +27,12 @@ export default function DialUp({ win }) {
   const [phase, setPhase] = useState({ step: null }) // { step: index into STEPS | 'done' | null }
   const hangUp = useRef(() => {})
   const timers = useRef([])
-  const set = (field) => (event) => setForm((current) => ({ ...current, [field]: event.target.value }))
+  const set = (field) => (event) => {
+    const { value } = event.target
+    // Typing "Simon" as your name gets you Foxy.
+    if (field === 'name' && value.trim().toLowerCase() === 'simon' && form.name.trim().toLowerCase() !== 'simon') api.jumpscare()
+    setForm((current) => ({ ...current, [field]: value }))
+  }
 
   const stop = () => {
     timers.current.forEach(clearTimeout)

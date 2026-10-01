@@ -316,6 +316,9 @@
   min-height: 0;
 }
 
+.w95-nope { background: #000; }
+.w95-nope img { flex: 1; min-height: 0; width: 100%; object-fit: contain; }
+
 /* A sunken white field; its scrollbars sit inside the bevel, as in Windows 95. */
 .w95-well {
   display: flex;

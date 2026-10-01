@@ -6,6 +6,7 @@ import Folder from './Folder.jsx'
 import Help from './Help.jsx'
 import MessageBox from './MessageBox.jsx'
 import Minesweeper from './Minesweeper.jsx'
+import Nope from './Nope.jsx'
 import Notepad from './Notepad.jsx'
 import Run from './Run.jsx'
 
@@ -19,6 +20,7 @@ export const APPS = {
   browser: { component: Browser, width: 640, height: 460, resizable: true, title: 'Microsoft Internet Explorer', icon: 'ie' },
   chat: { component: AskJulian, width: 400, height: 440, resizable: true, title: 'Ask Julian', icon: 'chat' },
   dos: { component: DosPrompt, width: 600, height: 380, resizable: true, title: 'MS-DOS Prompt', icon: 'dos' },
+  nope: { component: Nope, width: 260, height: 278, maximizable: false, title: 'NOPE.GIF', icon: 'error' },
   help: { component: Help, width: 440, height: 420, resizable: true, title: 'Windows Help', icon: 'help' },
   about: { component: About, dialog: true, title: (p) => `About ${p.product ?? 'Windows 95'}` },
   run: { component: Run, dialog: true, title: 'Run' },

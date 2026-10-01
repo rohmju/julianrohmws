@@ -28,8 +28,9 @@ const TIMELINE = {
   goodbye: ['safe', 450],
   safe: ['off', 2600], // "It's now safe to turn off your computer."
   off: [null, 750], // the picture collapses into a line and a dot
+  dead: ['black', 4000], // someone deleted My Computer: nothing, then a reboot
 }
-const TIMELINE_REDUCED = { black: 250, loading: 250, icons: 0, closing: 300, goodbye: 150, safe: 1800, off: 300 }
+const TIMELINE_REDUCED = { black: 250, loading: 250, icons: 0, closing: 300, goodbye: 150, safe: 1800, off: 300, dead: 2000 }
 const DESKTOP_STAGES = new Set(['loading', 'icons', 'ready', 'closing'])
 
 // Keep the pixel font loading while the screen is still black.
@@ -100,7 +101,7 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
   const [wm, dispatch] = useReducer(manage, NO_WINDOWS)
   const [selected, setSelected] = useState(null)
   const [start, setStart] = useState(null) // { keyboard } while the Start menu is open
-  const [context, setContext] = useState(null) // { x, y } of the desktop's right-click menu
+  const [context, setContext] = useState(null) // { x, y, items } of an open right-click menu
   const [shutDownOpen, setShutDownOpen] = useState(false)
   const [recent, setRecent] = useState([])
   const [placed, setPlaced] = useState({}) // desktop icons' cells, once one has been dragged
@@ -118,7 +119,12 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
   const grid = gridSize(bounds)
   const cells = layoutIcons(iconGroups, placed, grid)
   // A dropped icon snaps to the nearest free cell; every other icon stays where it is now.
-  const moveIcon = (id, target) => setPlaced({ ...cells, [id]: nearestFreeCell(cells, id, target, grid) })
+  // Dropped on the Recycle Bin, it is "deleted" instead.
+  const moveIcon = (id, target) => {
+    const bin = cells['recycle-bin']
+    if (id !== 'recycle-bin' && bin.col === target.col && bin.row === target.row) return api.remove(iconGroups.flat().find((n) => n.id === id))
+    setPlaced({ ...cells, [id]: nearestFreeCell(cells, id, target, grid) })
+  }
 
   useEffect(() => {
     if (!TIMELINE[stage]) return
@@ -222,6 +228,25 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
         text: `Cannot find the file '${command}' (or one of its components). Make sure the path and filename are correct and that all required libraries are available.`,
       })
     }
+    // Nothing can be deleted: every attempt opens another NOPE.GIF, and My Computer takes the
+    // whole computer down with it.
+    const remove = (node) => {
+      if (node?.id !== fs.myComputer.id) return open('nope')
+      setStart(null)
+      setContext(null)
+      setShutDownOpen(false)
+      setSelected(null)
+      dispatch({ type: 'closeAll' })
+      setStage('dead')
+    }
+    // A right-click menu at the pointer, e.g. an icon's.
+    const contextMenu = (event, items) => {
+      event.preventDefault()
+      event.stopPropagation()
+      const screen = rootRef.current.getBoundingClientRect()
+      const k = screenScale(rootRef.current)
+      setContext({ x: (event.clientX - screen.left) / k, y: (event.clientY - screen.top) / k, items })
+    }
     return {
       ...shared,
       open,
@@ -229,6 +254,8 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
       run,
       launch,
       message,
+      remove,
+      contextMenu,
       about: (product) => open('about', { product }, { key: `about:${product ?? 'Windows 95'}` }),
       notAvailable: (name) => message({ title: name, icon: 'info', text: `${name} is not available on this computer.` }),
       focus: (id) => dispatch({ type: 'focus', id }),
@@ -366,9 +393,7 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
             onContextMenu={(event) => {
               event.preventDefault()
               if (stage !== 'ready' || event.target.closest('.w95-window')) return
-              const screen = rootRef.current.getBoundingClientRect()
-              const k = screenScale(rootRef.current)
-              setContext({ x: (event.clientX - screen.left) / k, y: (event.clientY - screen.top) / k })
+              api.contextMenu(event, desktopMenu)
             }}
           >
             {(stage === 'icons' || stage === 'ready') && (
@@ -414,7 +439,7 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
           />
         )}
         {stage === 'ready' && start && <StartMenu items={startItems} onClose={closeStart} autoFocus={start.keyboard} />}
-        {stage === 'ready' && context && <ContextMenu x={context.x} y={context.y} items={desktopMenu} onClose={closeContext} />}
+        {stage === 'ready' && context && <ContextMenu x={context.x} y={context.y} items={context.items} onClose={closeContext} />}
         {shutDownOpen && (
           <ShutDownDialog
             onChoose={onShutDownChoice}

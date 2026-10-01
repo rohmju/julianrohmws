@@ -20,6 +20,8 @@ export default function Folder({ win, props: { node } }) {
       items: [
         { label: '&Open', disabled: !current, onSelect: () => api.openNode(current) },
         '-',
+        { label: '&Delete', disabled: !current, onSelect: () => api.remove(current) },
+        '-',
         { label: '&Close', onSelect: () => api.close(win.id) },
       ],
     },

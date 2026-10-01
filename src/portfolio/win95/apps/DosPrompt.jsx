@@ -79,6 +79,14 @@ export default function DosPrompt({ win }) {
         return [args.length ? 'Invalid directory' : 'C:\\WINDOWS']
       case 'win':
         return ['You are already running Windows.']
+      case 'del':
+      case 'erase':
+      case 'deltree':
+      case 'rd':
+      case 'rmdir':
+        if (!args.length) return ['Required parameter missing']
+        api.remove()
+        return ['Access denied']
       case 'exit':
         api.close(win.id)
         return null

@@ -1,0 +1,24 @@
+{
+  "$comment": "What the Ask Julian chatbot on the Windows 95 desktop knows about Julian beyond the departments (departments.json) and the Projects board (projects.json). Everything here is sent to Gemini as context, so only put in what visitors may know. Empty fields are left out.",
+  "name": "Julian Rohm",
+  "about": "",
+  "skills": [
+    "3+ years of experience in agentic coding",
+    "Frontend development (3+ years)",
+    "Building AI agents",
+    "Scrum Master (PSM I)",
+    "Java basics",
+    "Cyber security basics",
+    "Google Cloud basics",
+    "Terraform basics"
+  ],
+  "projects": [
+    "FPS shooter game (FPS Chess)",
+    "Online chat app",
+    "Agentic chat AI with a database behind it",
+    "To-do app",
+    "Worked on the Pick n Pack app",
+    "This portfolio website, including the Windows 95 desktop and this chatbot"
+  ],
+  "contact": ""
+}

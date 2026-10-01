@@ -34,6 +34,12 @@ export default function Help() {
               : ' Click a square to uncover it; right-click to plant a flag.'}
           </p>
 
+          <h3>To ask questions</h3>
+          <p>
+            {open} Ask Julian on the desktop and type a question about Julian, or about anything else. With Minesweeper
+            open, ask it for a hint.
+          </p>
+
           <h3>To leave</h3>
           <p>Click Start, click Shut Down, and then click Yes.</p>
         </article>

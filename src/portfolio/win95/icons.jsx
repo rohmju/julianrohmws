@@ -308,6 +308,17 @@ const LARGE = {
       <path fill={K} d="M15 10h3v10h-3zM15 22h3v3h-3z" />
     </>
   ),
+  // Ask Julian: a white speech bubble answered by a yellow one that's still typing.
+  chat: () => (
+    <>
+      <path fill={K} d="M2 3h20v14H2zM5 16h4v1h-1v1h-1v1h-1v1H5z" />
+      <path fill={W} d="M3 4h18v12H3zM6 16h2v1h-1v1H6z" />
+      <path fill={N} d="M5 6h14v1H5zM5 9h14v1H5zM5 12h5v1H5z" />
+      <path fill={K} d="M11 12h19v13H11zM23 24h4v4h-1v-1h-1v-1h-1v-1h-1z" />
+      <path fill={Y} d="M12 13h17v11H12zM24 24h2v2h-1v-1h-1z" />
+      <path fill={K} d="M15 18h2v2h-2zM19 18h2v2h-2zM23 18h2v2h-2z" />
+    </>
+  ),
 }
 
 const smallFolderTinted = (tint = tintOf()) => (
@@ -344,6 +355,16 @@ const smallDrive = (
 
 const SMALL = {
   folder: (tint) => smallFolderTinted(tint),
+  chat: () => (
+    <>
+      <path fill={K} d="M0 1h11v8H0zM2 9h3v1h-1v1h-1v1H2z" />
+      <path fill={W} d="M1 2h9v6H1zM3 8h1v1H3z" />
+      <path fill={N} d="M2 3h7v1H2zM2 5h3v1H2z" />
+      <path fill={K} d="M5 5h11v8H5zM11 13h3v3h-1v-1h-1v-1h-1z" />
+      <path fill={Y} d="M6 6h9v6H6zM12 12h1v1h-1z" />
+      <path fill={K} d="M8 8h1v2H8zM10 8h1v2h-1zM12 8h1v2h-1z" />
+    </>
+  ),
   documents: () => (
     <>
       {smallFolder}

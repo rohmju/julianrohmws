@@ -118,6 +118,7 @@ export function buildFileSystem(departments) {
     notepad: { type: 'app', id: 'app/notepad', name: 'Notepad', icon: 'notepad', app: 'notepad' },
     minesweeper: { type: 'app', id: 'app/minesweeper', name: 'Minesweeper', icon: 'minesweeper', app: 'minesweeper' },
     browser: { type: 'app', id: 'app/iexplore', name: 'Internet Explorer', icon: 'ie', app: 'browser' },
+    chat: { type: 'app', id: 'app/askjulian', name: 'Ask Julian', icon: 'chat', app: 'chat' },
   }
 
   const driveC = {
@@ -136,6 +137,7 @@ export function buildFileSystem(departments) {
         children: [
           { type: 'folder', id: 'accessories', name: 'Accessories', icon: 'folder', children: [programs.notepad, programs.minesweeper] },
           { type: 'folder', id: 'plus', name: 'Plus!', icon: 'folder', children: [{ ...programs.browser, id: 'plus/iexplore', name: 'Iexplore.exe' }] },
+          { type: 'folder', id: 'ask-julian', name: 'Ask Julian', icon: 'folder', children: [{ ...programs.chat, id: 'ask-julian/exe', name: 'Askjulian.exe' }] },
         ],
       },
       {
@@ -199,7 +201,7 @@ export function buildFileSystem(departments) {
     myComputer,
     departments: folders,
     // Desktop: the system icons in the first column, then the departments.
-    system: [myComputer, network, { ...programs.browser, id: 'desktop/iexplore' }, recycleBin, { ...programs.minesweeper, id: 'desktop/minesweeper', shortcut: true }],
+    system: [myComputer, network, { ...programs.browser, id: 'desktop/iexplore' }, recycleBin, { ...programs.minesweeper, id: 'desktop/minesweeper', shortcut: true }, { ...programs.chat, id: 'desktop/askjulian', shortcut: true }],
     programs,
   }
 }
@@ -217,7 +219,7 @@ export function kindOf(node) {
 }
 
 // Bytes a node takes up; programs get plausible sizes of the real ones.
-const APP_BYTES = { notepad: 34304, minesweeper: 24336, dos: 92870, browser: 438272 }
+const APP_BYTES = { notepad: 34304, minesweeper: 24336, dos: 92870, browser: 438272, chat: 65536 }
 export function sizeOf(node) {
   if (node.type === 'file') return new TextEncoder().encode(node.text).length
   if (node.type === 'app') return APP_BYTES[node.app] ?? 0

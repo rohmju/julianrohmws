@@ -30,7 +30,7 @@ const HELP = [
   'TIME     Displays the time.',
   'VER      Displays the Windows version.',
   '',
-  'NOTEPAD, WINMINE and EXPLORER start those programs.',
+  'NOTEPAD, WINMINE, EXPLORER and ASKJULIAN start those programs.',
 ]
 
 const pad = (n) => String(n).padStart(2, '0')
@@ -86,6 +86,7 @@ export default function DosPrompt({ win }) {
       case 'winmine':
       case 'explorer':
       case 'iexplore':
+      case 'askjulian':
         api.launch(args.length ? `${name} ${args.join(' ')}` : name)
         return []
       default:

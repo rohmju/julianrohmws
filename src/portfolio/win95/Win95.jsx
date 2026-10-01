@@ -9,7 +9,7 @@ import ShutDownDialog from './components/ShutDownDialog.jsx'
 import StartMenu from './components/StartMenu.jsx'
 import Taskbar from './components/Taskbar.jsx'
 import Window from './components/Window.jsx'
-import { Win95Context } from './context.js'
+import { Win95Context, createSharedStore } from './context.js'
 import { cursorVariables } from './cursors.js'
 import { gridSize, layoutIcons, nearestFreeCell } from './desktopGrid.js'
 import { buildFileSystem } from './fileSystem.js'
@@ -156,7 +156,8 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
   }, [showDesktop])
 
   const api = useMemo(() => {
-    const open = (app, props = {}, { key, maximized } = {}) => {
+    const shared = createSharedStore()
+    const open =(app, props = {}, { key, maximized } = {}) => {
       const spec = APPS[app]
       const { wm, bounds } = latest.current
       let place = {}
@@ -203,6 +204,8 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
         winhelp: 'help',
         help: 'help',
         iexplore: 'browser',
+        askjulian: 'chat',
+        chat: 'chat',
       }
       if (programs[name]) return run(programs[name])
       // "iexplore <address>" or a web address on its own opens a new browser window.
@@ -220,6 +223,7 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
       })
     }
     return {
+      ...shared,
       open,
       openNode,
       run,
@@ -254,6 +258,7 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
             ],
           },
           { label: 'StartUp', icon: 'programs', submenu: [{ label: '(Empty)', disabled: true }] },
+          { label: 'Ask Julian', icon: 'chat', onSelect: () => api.run('chat') },
           { label: 'Internet Explorer', icon: 'ie', onSelect: () => api.run('browser') },
           { label: 'MS-DOS Prompt', icon: 'dos', onSelect: () => api.run('dos') },
           { label: 'Windows Explorer', icon: 'explorer', onSelect: () => api.run('explorer') },

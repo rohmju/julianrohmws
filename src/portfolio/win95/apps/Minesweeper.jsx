@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useRef, useState } from 'react'
-import { useWin95 } from '../context.js'
+import { useShared, useWin95 } from '../context.js'
 import MenuBar from '../components/MenuBar.jsx'
 
 const LEVELS = {
@@ -13,7 +13,7 @@ const TOUCH_SLOP = 10 // px a finger may move before a press counts as scrolling
 // ---------------------------------------------------------------------------------------------
 // Game rules
 
-function neighbours(index, { rows, cols }) {
+export function neighbours(index, { rows, cols }) {
   const row = Math.floor(index / cols)
   const col = index % cols
   const out = []
@@ -25,9 +25,12 @@ function neighbours(index, { rows, cols }) {
   return out
 }
 
+let games = 0
+
 function newGame(level, marks) {
   const { rows, cols, mines } = LEVELS[level]
   return {
+    id: ++games, // Ask Julian's hints belong to one game
     level,
     rows,
     cols,
@@ -208,11 +211,13 @@ function cellContent(cell) {
   return cell.count ? <b className={`w95-mines__n${cell.count}`}>{cell.count}</b> : null
 }
 
-function cellLabel(cell, index, cols) {
+const HINT_LABEL = { safe: 'hint: safe to open', mine: 'hint: a mine, flag it', guess: 'hint: best guess' }
+
+function cellLabel(cell, index, cols, hint) {
   const where = `Row ${Math.floor(index / cols) + 1}, column ${(index % cols) + 1}`
   if (cell.state === 'flagged') return `${where}, flagged`
   if (cell.state === 'revealed') return `${where}, ${cell.mine ? 'mine' : cell.count || 'empty'}`
-  return `${where}, covered`
+  return hint ? `${where}, covered, ${HINT_LABEL[hint]}` : `${where}, covered`
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -223,6 +228,13 @@ export default function Minesweeper({ win, active }) {
   // The cell held down, which draws pressed (with its neighbours when chording).
   const [pressed, setPressed] = useState(null)
   const touch = useRef(null)
+
+  // Ask Julian reads the game to give hints (it only ever looks at what the player can see), and its
+  // hints blink on the board until the square is opened or flagged.
+  useEffect(() => api.share('minesweeper', game), [api, game])
+  useEffect(() => () => api.share('minesweeper', null), [api])
+  const hint = useShared('minesweeper-hint')
+  const hintAt = (i) => (hint?.game === game.id && hidden(game.cells[i]) ? hint.cells[i] : undefined)
 
   useEffect(() => {
     if (game.status !== 'playing') return
@@ -362,17 +374,20 @@ export default function Minesweeper({ win, active }) {
             onPointerCancel={cancelTouch}
             onContextMenu={(event) => event.preventDefault()}
           >
-            {game.cells.map((cell, i) => (
-              <span
-                key={i}
-                data-cell={i}
-                role="gridcell"
-                aria-label={cellLabel(cell, i, game.cols)}
-                className={`w95-mines__cell is-${down.has(i) ? 'down' : cell.state} ${cell.exploded ? 'is-exploded' : ''}`}
-              >
-                {cellContent(cell)}
-              </span>
-            ))}
+            {game.cells.map((cell, i) => {
+              const hinted = hintAt(i)
+              return (
+                <span
+                  key={i}
+                  data-cell={i}
+                  role="gridcell"
+                  aria-label={cellLabel(cell, i, game.cols, hinted)}
+                  className={`w95-mines__cell is-${down.has(i) ? 'down' : cell.state} ${cell.exploded ? 'is-exploded' : ''} ${hinted ? `is-hint is-hint-${hinted}` : ''}`}
+                >
+                  {cellContent(cell)}
+                </span>
+              )
+            })}
           </div>
         </div>
       </div>

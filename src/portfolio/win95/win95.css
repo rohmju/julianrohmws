@@ -1090,6 +1090,21 @@
 .w95-mines__cell.is-wrong { box-shadow: inset 1px 1px var(--shadow); }
 
 .w95-mines__cell.is-exploded { background: #ff0000; }
+
+/* Ask Julian's hint: a blinking frame, green to open, red to flag, orange for a guess. */
+.w95-mines__cell.is-hint { position: relative; }
+.w95-mines__cell.is-hint-safe { --hint: #00c000; }
+.w95-mines__cell.is-hint-mine { --hint: #ff0000; }
+.w95-mines__cell.is-hint-guess { --hint: #ff8000; }
+
+.w95-mines__cell.is-hint::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--hint);
+  pointer-events: none;
+  animation: w95-blink 0.8s steps(1) infinite;
+}
 .w95-mines__cell b { font-weight: 700; }
 
 .w95-mines__n1 { color: #0000ff; }
@@ -1100,6 +1115,62 @@
 .w95-mines__n6 { color: #008080; }
 .w95-mines__n7 { color: #000000; }
 .w95-mines__n8 { color: #808080; }
+
+/* ---------- Ask Julian ---------- */
+
+.w95-chat__log {
+  flex: 1;
+  min-height: 0;
+  padding: 4px 6px;
+  overflow-y: auto;
+  color: var(--dark);
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* An instant messenger's log: your name in red, the other side's in blue. */
+.w95-chat__message {
+  margin: 0 0 8px;
+  line-height: 15px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.w95-chat__message.is-user b { color: #ff0000; }
+.w95-chat__message.is-model b { color: #0000ff; }
+
+.w95-chat__typing {
+  margin: 0;
+  color: var(--shadow);
+  animation: w95-blink 1.06s steps(1) infinite;
+}
+
+.w95-chat__suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.w95-chat__suggestions .w95-button { min-width: 0; height: auto; min-height: 23px; padding: 3px 8px; text-align: left; }
+
+.w95-chat__compose {
+  display: flex;
+  flex: none;
+  gap: 4px;
+  align-items: stretch;
+  margin-top: 4px;
+}
+
+.w95-chat__input {
+  flex: 1;
+  min-width: 0;
+  height: auto;
+  resize: none;
+  line-height: 15px;
+}
+
+.w95-chat__compose .w95-button { min-width: 64px; height: auto; }
 
 /* ---------- Shut-down ---------- */
 
@@ -1209,7 +1280,9 @@
   .w95[data-stage='loading'] .w95-desktop,
   .w95[data-stage='icons'] .w95-desktop__icons .w95-icon,
   .w95[data-stage='off'] .w95-safe,
-  .w95-dos__cursor { animation: none; }
+  .w95-dos__cursor,
+  .w95-chat__typing,
+  .w95-mines__cell.is-hint::after { animation: none; }
   .w95-crt-off::before { display: none; }
 }
 

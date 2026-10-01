@@ -5,6 +5,7 @@ const PRODUCTS = {
   Notepad: { icon: 'notepad' },
   Minesweeper: { icon: 'minesweeper', credit: 'by Robert Donner and Curt Johnson' },
   'Internet Explorer': { icon: 'ie' },
+  'Ask Julian': { icon: 'chat', credit: 'powered by Google Gemini' },
 }
 
 // The About box every Windows 95 program shares; it also carries the font credit.

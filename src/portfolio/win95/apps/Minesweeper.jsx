@@ -194,7 +194,7 @@ const Flag = () => (
   </svg>
 )
 
-// "bazuki=true" in the MS-DOS Prompt swaps the bomb for a face.
+// "bazukimode" in the MS-DOS Prompt swaps the bomb for a face.
 const Mine = ({ crossed = false }) => {
   const bazuki = useShared('bazuki')
   return (

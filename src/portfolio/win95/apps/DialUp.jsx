@@ -29,8 +29,8 @@ export default function DialUp({ win }) {
   const timers = useRef([])
   const set = (field) => (event) => {
     const { value } = event.target
-    // Typing "Simon" as your name gets you Foxy.
-    if (field === 'name' && value.trim().toLowerCase() === 'simon' && form.name.trim().toLowerCase() !== 'simon') api.jumpscare()
+    // With "simonmail" on (MS-DOS Prompt), typing "Simon" as your name gets you Foxy.
+    if (field === 'name' && api.peek('simonmail') &&value.trim().toLowerCase() === 'simon' && form.name.trim().toLowerCase() !== 'simon') api.jumpscare()
     setForm((current) => ({ ...current, [field]: value }))
   }
 

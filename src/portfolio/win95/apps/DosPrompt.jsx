@@ -87,9 +87,18 @@ export default function DosPrompt({ win }) {
         if (!args.length) return ['Required parameter missing']
         api.remove()
         return ['Access denied']
-      case 'bazuki=true': // unlocks the Minesweeper reskin
-        api.share('bazuki', true)
-        return []
+      case 'bazukimode': {
+        // Toggles the Minesweeper reskin.
+        const on = !api.peek('bazuki')
+        api.share('bazuki', on || null)
+        return [on ? 'Bazuki mode enabled.' : 'Bazuki mode disabled.']
+      }
+      case 'simonmail': {
+        // Toggles the Foxy jumpscare for "Simon" in Dial-Up Networking.
+        const on = !api.peek('simonmail')
+        api.share('simonmail', on || null)
+        return [on ? 'Simonmail enabled.' : 'Simonmail disabled.']
+      }
       case 'exit':
         api.close(win.id)
         return null

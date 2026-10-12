@@ -5,7 +5,8 @@ import { buildResume, resumeText } from './resume.js'
 //   folder    children                 opens a folder window
 //   file      text                     opens in Notepad
 //   document  blocks, text             opens in WordPad (text is what Find searches)
-//   link      url                      opens the URL in Internet Explorer
+//   link      url, ask                 opens the URL in Internet Explorer (ask: first asks whether
+//                                      to use Internet Explorer or a new tab of the real browser)
 //   app       app                      starts a program (see apps/index.js)
 //   error     error {title,text,icon}  shows a message box, like an empty floppy drive
 
@@ -78,6 +79,41 @@ function departmentFolder(d) {
   return { type: 'folder', id: `department/${d.id}`, name: d.name, icon: 'folder', color: d.color, children }
 }
 
+// Julian's projects, a folder each. Empty fields show as placeholders; a link without a url says so.
+// A stat is [label, value] or [label, value, color] (WordPad shows it in that color).
+const GREEN = '#008000'
+const PROJECTS = [
+  {
+    id: 'fps-chess',
+    name: 'FPS Chess',
+    url: 'https://chessimonfrontend.onrender.com/',
+    github: 'https://github.com/rohmju/fps-schach',
+    stats: [
+      ['Status', 'Live', GREEN],
+      ['Started', 'June 2026'],
+      ['Hours worked', '100h+'],
+      ['Claude cost', '200-500 dollar'],
+      ['Commits', '162'],
+      ['Lines of code', '~65,600'],
+      ['Tech stack', 'TypeScript, Three.js, React 19, Vite, Node.js, WebSockets, Howler.js, Theatre.js, Framer Motion'],
+    ],
+  },
+]
+
+function projectFolder(p) {
+  const blocks = [
+    { type: 'title', text: `${p.name}: stats` },
+    ...p.stats.map(([label, value, color]) => ({ type: 'stat', label, value: value || PLACEHOLDER, color })),
+    { type: 'stat', label: 'Live at', value: p.url || PLACEHOLDER },
+  ]
+  const children = [
+    { type: 'link', id: `${p.id}/site`, name: p.name, icon: 'url', url: p.url, ask: true },
+    { type: 'link', id: `${p.id}/github`, name: 'GitHub', icon: 'github', url: p.github, ask: true },
+    { type: 'document', id: `${p.id}/stats`, name: 'Stats.doc', icon: 'wordpad', kind: 'WordPad Document', blocks, text: resumeText(blocks) },
+  ]
+  return { type: 'folder', id: `project/${p.id}`, name: p.name, icon: 'folder', children }
+}
+
 const notAccessible = (drive) => ({
   title: `${drive}:\\`,
   text: `${drive}:\\ is not accessible.\n\nThe device is not ready.`,
@@ -128,7 +164,8 @@ export function buildFileSystem(departments, profile) {
     dialup: { type: 'app', id: 'app/dialup', name: 'Contact Julian', icon: 'dialup', app: 'dialup' },
     find: { type: 'app', id: 'app/find', name: 'Find', icon: 'find', app: 'find' },
   }
-  const myDocuments = { type: 'folder', id: 'my-documents', name: 'My Documents', icon: 'folder', children: [resume, ...folders] }
+  const projects = { type: 'folder', id: 'projects', name: 'Projects', icon: 'folder', children: PROJECTS.map(projectFolder) }
+  const myDocuments = { type: 'folder', id: 'my-documents', name: 'My Documents', icon: 'folder', children: [resume, projects, ...folders] }
 
   const driveC = {
     type: 'folder',
@@ -233,6 +270,7 @@ export function buildFileSystem(departments, profile) {
       { ...programs.dialup, id: 'desktop/contact', shortcut: true },
       { ...programs.minesweeper, id: 'desktop/minesweeper', shortcut: true },
       { ...programs.chat, id: 'desktop/askjulian', shortcut: true },
+      projects,
     ],
     programs,
   }

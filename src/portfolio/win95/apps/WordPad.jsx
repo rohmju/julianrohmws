@@ -14,6 +14,12 @@ function Document({ blocks }) {
         return <p key={i} className="is-subtitle">{block.text}</p>
       case 'heading':
         return <h2 key={i}>{block.text}</h2>
+      case 'stat':
+        return (
+          <p key={i}>
+            <b>{block.label}:</b> <span style={block.color ? { color: block.color, fontWeight: 'bold' } : undefined}>{block.value}</span>
+          </p>
+        )
       case 'list':
         return (
           <ul key={i}>

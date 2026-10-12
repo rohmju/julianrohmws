@@ -292,6 +292,14 @@ const LARGE = {
       <path fill={A} d="M11 23h3v1h-3z" />
     </>
   ),
+  // GitHub: the Octocat cut out of a black disc.
+  github: () => (
+    <>
+      <circle cx="16" cy="16" r="13.5" fill={K} />
+      <path fill={W} d="M9 7h2v2h2V8h6v1h2V7h2v6h1v6h-2v2h-4v6h-4v-6H9v-2H7v-6h2z" />
+      <path fill={W} d="M7 22h2v2h3v2H8v-2H7z" />
+    </>
+  ),
   url: () => (
     <>
       {page}
@@ -477,6 +485,12 @@ const SMALL = {
     <>
       <circle cx="8" cy="8" r="6.5" fill={B} stroke={K} />
       <path fill={E} d="M5 4h3v2h1v2H7v2H5V7H4V5h1zM10 8h3v2h-1v2h-2z" />
+    </>
+  ),
+  github: () => (
+    <>
+      <circle cx="8" cy="8" r="7" fill={K} />
+      <path fill={W} d="M4 3h1v1h6V3h1v3h1v3h-1v1h-2v4H6v-4H4V9H3V6h1z" />
     </>
   ),
   url: () => (

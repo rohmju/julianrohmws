@@ -18,6 +18,15 @@
 | 💣 **Minesweeper** | The classic. Ask Julian can look at your board and give you hints |
 | 🗂️ **Project board** | A lazily loaded Three.js board with the projects |
 
+## 🤫 Secret codes
+
+Open the **MS-DOS Prompt** on the Windows 95 desktop and type:
+
+| Command | What it does |
+|---|---|
+| `bazukimode` | Swaps the Minesweeper bombs for faces. Type it again to turn it off. |
+| `simonmail` | Arms the Dial-Up Networking: type `Simon` as your name and Foxy jumps out. Type it again to turn it off. |
+
 ## 🚀 Run it locally
 
 ```bash

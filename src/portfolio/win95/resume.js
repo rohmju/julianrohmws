@@ -3,6 +3,7 @@
 // WordPad shows and prints the blocks; Find searches the plain text.
 //
 // Blocks: { type: 'title' | 'subtitle' | 'heading' | 'paragraph', text }
+//         { type: 'stat', label, value, color? }
 //         { type: 'list', items: [text] }
 //         { type: 'entry', title, meta, detail, items: [text] }
 
@@ -38,6 +39,7 @@ export function resumeText(blocks) {
   return blocks
     .flatMap((block) => {
       if (block.type === 'list') return block.items.map((item) => `- ${item}`)
+      if (block.type === 'stat') return [`${block.label}: ${block.value}`]
       if (block.type === 'entry') return [`${block.title} (${block.meta})`, block.detail, ...block.items.map((item) => `- ${item}`)]
       return [block.text]
     })

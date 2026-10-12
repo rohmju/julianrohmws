@@ -205,10 +205,23 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
           return open('notepad', { name: node.name, text: node.text, color: node.color }, { key: `file:${node.id}` })
         case 'document':
           // The desktop shortcut and the file in My Documents share one window.
-          remember(fs.resume)
+          remember(node.id === 'desktop/resume' ? fs.resume : node)
           return open('wordpad', { name: node.name, blocks: node.blocks }, { key: `document:${node.name}` })
-        case 'link':
-          return open('browser', { url: node.url }, { key: `link:${node.id}` })
+        case 'link': {
+          const inBrowser = () => open('browser', { url: node.url }, { key: `link:${node.id}` })
+          if (!node.url) return message({ title: node.name, icon: 'info', text: `The shortcut '${node.name}' has no address yet.` })
+          if (!node.ask) return inBrowser()
+          return message({
+            title: node.name,
+            icon: 'question',
+            text: `How do you want to open ${node.name}?`,
+            buttons: [
+              { label: '&Internet Explorer', onSelect: inBrowser },
+              { label: 'New &Tab', onSelect: () => window.open(node.url, '_blank', 'noopener,noreferrer') },
+              'Cancel',
+            ],
+          })
+        }
         case 'app':
           return run(node.app)
         default:

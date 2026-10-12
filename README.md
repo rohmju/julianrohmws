@@ -8,17 +8,17 @@
  └──────────────────────────────────────────────┘
 ```
 
-## ✨ What's inside
+##  What's inside
 
 | | |
 |---|---|
-| 🪟 **Windows 95 desktop** | Draggable windows, Start menu, Notepad, DOS Prompt, Run dialog, Help |
-| 📁 **My Departments** | Every department Julian worked in, as folders and text files |
-| 💬 **Ask Julian** | A chatbot (Gemini) that knows Julian's skills, departments and projects |
-| 💣 **Minesweeper** | The classic. Ask Julian can look at your board and give you hints |
-| 🗂️ **Project board** | A lazily loaded Three.js board with the projects |
+|  **Windows 95 desktop** | Draggable windows, Start menu, Notepad, DOS Prompt, Run dialog, Help |
+|  **My Departments** | Every department Julian worked in, as folders and text files |
+|  **Ask Julian** | A chatbot (Gemini) that knows Julian's skills, departments and projects |
+|  **Minesweeper** | The classic. Ask Julian can look at your board and give you hints |
+|  **Project board** | A lazily loaded Three.js board with the projects |
 
-## 🤫 Secret codes
+## Secret codes
 
 Open the **MS-DOS Prompt** on the Windows 95 desktop and type:
 
@@ -27,7 +27,7 @@ Open the **MS-DOS Prompt** on the Windows 95 desktop and type:
 | `bazukimode` | Swaps the Minesweeper bombs for faces. Type it again to turn it off. |
 | `simonmail` | Arms the Dial-Up Networking: type `Simon` as your name and Foxy jumps out. Type it again to turn it off. |
 
-## 🚀 Run it locally
+##  Run it locally
 
 ```bash
 npm install
@@ -42,14 +42,13 @@ GEMINI_API_KEY=your-key-from-aistudio.google.com
 
 The Vite dev server also serves `api/chat.js`, so you don't need the Vercel CLI.
 
-## 🧱 Stack
+## Stack
 
 React 18 · Vite 5 · React Router · Three.js · Gemini API · deployed on Vercel
 
-## 📦 Deploy
+## Deploy
 
 Push to `main`. Vercel builds it. Set `GEMINI_API_KEY` in the Vercel project's environment variables.
 
 ---
 
-<sub>Built with way too much nostalgia for 1995. 💾</sub>

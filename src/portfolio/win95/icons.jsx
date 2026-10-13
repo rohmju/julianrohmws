@@ -2,6 +2,9 @@
 // design where the small version needs one. Everything sits on whole pixels and renders with
 // crisp edges, so the icons stay sharp at 1× and 2×.
 
+import { useContext, useSyncExternalStore } from 'react'
+import { Win95Context } from './context.js'
+
 const K = '#000000'
 const W = '#ffffff'
 const S = '#c0c0c0'
@@ -602,6 +605,163 @@ const SMALL = {
   ),
 }
 
+// Department folders: the folder in the department's color with an emblem for what the department
+// does in the lower-right corner, like Control Panel's and Printers' folders. Icon name "dept-<id>"
+// (departments.json); a department without an emblem gets the plain tinted folder.
+const EMBLEMS = {
+  // Cyber Security: a padlock.
+  cybersec: {
+    large: (
+      <>
+        <path fill={K} d="M18 12h10v8h-2v-6h-6v6h-2z" />
+        <path fill={S} d="M19 13h8v1h-8zM19 14h1v6h-1zM26 14h1v6h-1z" />
+        <path fill={K} d="M16 19h14v12H16z" />
+        <path fill={Y} d="M17 20h12v10H17z" />
+        <path fill={W} d="M17 20h12v1H17z" />
+        <path fill={D} d="M17 29h12v1H17zM28 21h1v8h-1z" />
+        <path fill={K} d="M21 22h4v2h-4zM22 24h2v3h-2z" />
+      </>
+    ),
+    small: (
+      <>
+        <path fill={K} d="M10 5h4v1h-4zM9 6h1v3H9zM14 6h1v3h-1z" />
+        <path fill={K} d="M8 9h8v7H8z" />
+        <path fill={Y} d="M9 10h6v5H9z" />
+        <path fill={K} d="M11 11h2v3h-2z" />
+      </>
+    ),
+  },
+  // Data Platform: a database, three disks stacked.
+  'data-platform': {
+    large: (
+      <>
+        <path fill={K} d="M17 13h12v1h2v15h-2v2H17v-2h-2V14h2z" />
+        <path fill={S} d="M17 14h12v1h1v13h-1v2H17v-2h-1V15h1z" />
+        <path fill={W} d="M17 14h12v3H17zM16 15h1v1h-1zM29 15h1v1h-1z" />
+        <path fill={K} d="M16 18h14v1H16zM16 23h14v1H16z" />
+        <path fill={G} d="M17 28h12v1H17z" />
+        <path fill={L} d="M26 20h2v1h-2zM26 25h2v1h-2z" />
+      </>
+    ),
+    small: (
+      <>
+        <path fill={K} d="M9 5h6v1h1v9h-1v1H9v-1H8V6h1z" />
+        <path fill={S} d="M9 6h6v9H9z" />
+        <path fill={W} d="M9 6h6v2H9z" />
+        <path fill={K} d="M9 9h6v1H9zM9 12h6v1H9z" />
+        <path fill={L} d="M13 10h1v1h-1zM13 13h1v1h-1z" />
+      </>
+    ),
+  },
+  // Instore Operations Apps: a handheld scanner reading a barcode.
+  picknpack: {
+    large: (
+      <>
+        <path fill={K} d="M18 12h11v19H18z" />
+        <path fill={S} d="M19 13h9v17h-9z" />
+        <path fill={W} d="M20 14h7v8h-7z" />
+        <path fill={K} d="M21 15h1v6h-1zM23 15h2v6h-2zM26 15h1v6h-1z" />
+        <path fill={R} d="M20 18h7v1h-7z" />
+        <path fill={G} d="M20 24h2v1h-2zM23 24h2v1h-2zM20 26h2v1h-2zM23 26h2v1h-2zM20 28h2v1h-2zM23 28h2v1h-2z" />
+        <path fill={L} d="M26 24h1v5h-1z" />
+      </>
+    ),
+    small: (
+      <>
+        <path fill={K} d="M10 5h6v11h-6z" />
+        <path fill={S} d="M11 6h4v9h-4z" />
+        <path fill={W} d="M11 7h4v4h-4z" />
+        <path fill={K} d="M12 7h1v4h-1zM14 7h1v4h-1z" />
+        <path fill={R} d="M11 9h4v1h-4z" />
+      </>
+    ),
+  },
+  // Enterprise Architecture: a building with a pediment and columns.
+  'enterprise-architecture': {
+    large: (
+      <>
+        <path fill={K} d="M22 12h2v1h2v1h2v1h2v1h1v2H15v-2h1v-1h2v-1h2v-1h2z" />
+        <path fill={S} d="M22 13h2v1h2v1h2v1h2v1H16v-1h2v-1h2v-1h2z" />
+        <path fill={G} d="M16 18h14v10H16z" />
+        <path fill={W} d="M17 18h2v10h-2zM22 18h2v10h-2zM27 18h2v10h-2z" />
+        <path fill={K} d="M15 28h16v3H15z" />
+        <path fill={S} d="M16 29h14v1H16z" />
+      </>
+    ),
+    small: (
+      <>
+        <path fill={K} d="M11 5h2v1h2v1h1v2H8V7h1V6h2z" />
+        <path fill={S} d="M11 6h2v1h2v1H9V7h2z" />
+        <path fill={G} d="M8 9h8v5H8z" />
+        <path fill={W} d="M9 9h1v5H9zM11 9h1v5h-1zM14 9h1v5h-1z" />
+        <path fill={K} d="M8 14h8v2H8z" />
+      </>
+    ),
+  },
+  // Tech Strategy & Operational Excellence: an arrow in the bull's-eye.
+  'tech-strategy-op-excellence': {
+    large: (
+      <>
+        <circle cx="22" cy="23" r="7.5" fill={W} stroke={K} />
+        <circle cx="22" cy="23" r="5" fill={R} />
+        <circle cx="22" cy="23" r="3" fill={W} />
+        <circle cx="22" cy="23" r="1.5" fill={R} />
+        <path fill="none" stroke={K} strokeWidth="2" d="M22 23L29 16" />
+        <path fill={Y} d="M27 12h2v3h-2zM29 14h3v2h-3z" />
+      </>
+    ),
+    small: (
+      <>
+        <circle cx="11.5" cy="11.5" r="4" fill={W} stroke={K} />
+        <circle cx="11.5" cy="11.5" r="2.5" fill={R} />
+        <path fill={W} d="M11 11h1v1h-1z" />
+        <path fill={K} d="M12 10h1v1h-1zM13 9h1v1h-1zM14 8h1v1h-1z" />
+        <path fill={Y} d="M14 6h1v2h-1zM15 7h1v2h-1z" />
+      </>
+    ),
+  },
+  // Mystore: a shop front with a striped awning.
+  mystore: {
+    large: (
+      <>
+        <path fill={K} d="M15 13h16v6H15z" />
+        <path fill={R} d="M16 14h2v4h-2zM20 14h2v4h-2zM24 14h2v4h-2zM28 14h2v4h-2z" />
+        <path fill={W} d="M18 14h2v4h-2zM22 14h2v4h-2zM26 14h2v4h-2z" />
+        <path fill={K} d="M16 19h14v12H16z" />
+        <path fill={S} d="M17 19h12v11H17z" />
+        <path fill={K} d="M18 21h6v6h-6z" />
+        <path fill={A} d="M19 22h4v4h-4z" />
+        <path fill={K} d="M21 22h1v4h-1zM25 21h4v9h-4z" />
+        <path fill={O} d="M26 22h2v8h-2z" />
+        <path fill={Y} d="M26 26h1v1h-1z" />
+      </>
+    ),
+    small: (
+      <>
+        <path fill={K} d="M8 5h8v4H8z" />
+        <path fill={R} d="M9 6h2v2H9zM13 6h2v2h-2z" />
+        <path fill={W} d="M11 6h2v2h-2z" />
+        <path fill={K} d="M8 9h8v7H8z" />
+        <path fill={S} d="M9 9h6v6H9z" />
+        <path fill={A} d="M10 10h2v2h-2z" />
+        <path fill={O} d="M13 11h2v4h-2z" />
+      </>
+    ),
+  },
+}
+
+const department = (name, tint, small) => {
+  const emblem = EMBLEMS[name.slice('dept-'.length)]
+  if (small) return <>{smallFolderTinted(tint)}{emblem?.small}</>
+  return (
+    <>
+      {folderBack(tint)}
+      {folderFront(12, tint)}
+      {emblem?.large}
+    </>
+  )
+}
+
 // The shortcut arrow in its white box, laid over the lower-left corner.
 const SHORTCUT = (
   <>
@@ -611,7 +771,22 @@ const SHORTCUT = (
   </>
 )
 
+const NO_STORE = { subscribe: () => () => {}, peek: () => undefined }
+
 export default function Icon({ name, size = 32, shortcut = false, color, className = '' }) {
+  // "oldfolder" in the MS-DOS Prompt brings back the plain tinted department folders.
+  const store = useContext(Win95Context)?.api ?? NO_STORE
+  const oldFolder = useSyncExternalStore(store.subscribe, () => store.peek('oldfolder'))
+  if (oldFolder && name?.startsWith('dept-')) name = 'folder'
+  if (name?.startsWith('dept-')) {
+    const grid = size <= 16 ? 16 : 32
+    return (
+      <svg className={`w95-glyph ${className}`} viewBox={`0 0 ${grid} ${grid}`} width={size} height={size} shapeRendering="crispEdges" aria-hidden="true" focusable="false">
+        {department(name, color ? tintOf(color) : undefined, grid === 16)}
+        {shortcut && grid === 32 && SHORTCUT}
+      </svg>
+    )
+  }
   const small = size <= 16 && SMALL[name]
   const draw = small ? SMALL[name] : LARGE[name] ?? SMALL[name]
   if (!draw) return null

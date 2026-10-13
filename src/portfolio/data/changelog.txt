@@ -1,0 +1,18 @@
+CHANGELOG
+=========
+The newest changes to the website, latest first.
+
+2026-10-13
+  - Every department folder has its own pixel icon.
+  - New error sound for error messages.
+  - MS-DOS Prompt shortcut on the desktop.
+  - Ask Julian now knows about the FPS Chess project.
+  - Changelog.txt on the desktop (this file).
+
+2026-10-01
+  - Dial-Up Networking, Find, System Properties and WordPad.
+  - Ask Julian chatbot with Minesweeper hints.
+  - Windows 95 desktop with a folder per department.
+
+2026-09-26
+  - Portfolio start page, video stage and projects board.

@@ -1,3 +1,4 @@
 # Project conventions
 
 - This is a React (Vite) project. All UI/animation work must be written as React components under `src/`, not standalone `.html` files — even when a skill (e.g. clawd-animation) defaults to producing a self-contained HTML file, adapt its output into React components/hooks instead.
+- Keep the changelog up to date. `src/portfolio/data/changelog.txt` is shown as Changelog.txt on the Win95 desktop. Whenever you change the website in a way a visitor could notice (new feature, fix, content or design change), add a short plain-language bullet under today's date (latest first) in that file, in the same change. Skip purely internal refactors. Never mention secrets in it: no secret commands or codes (MS-DOS Prompt commands, cheat codes), easter eggs or hidden reactions. Leave those changes out entirely.

@@ -105,6 +105,12 @@ export default function DosPrompt({ win }) {
         api.share('nodelete', on || null)
         return [on ? 'Nodelete enabled.' : 'Nodelete disabled.']
       }
+      case 'oldfolder': {
+        // Toggles the plain department folders without the emblems.
+        const on = !api.peek('oldfolder')
+        api.share('oldfolder', on || null)
+        return [on ? 'Oldfolder enabled.' : 'Oldfolder disabled.']
+      }
       case 'exit':
         api.close(win.id)
         return null

@@ -76,7 +76,7 @@ function departmentFolder(d) {
     file('feedback', 'Trainer Feedback & Special Achievements', [...heading(`${d.name}: trainer feedback`), '', ...feedback]),
     file('julian', "Julian's Feedback to the Department", [...heading(`${d.name}: Julian's feedback`), '', ...julian]),
   ]
-  return { type: 'folder', id: `department/${d.id}`, name: d.name, icon: 'folder', color: d.color, children }
+  return { type: 'folder', id: `department/${d.id}`, name: d.name, icon: `dept-${d.id}`, color: d.color, children }
 }
 
 // Julian's projects, a folder each. Empty fields show as placeholders; a link without a url says so.
@@ -151,7 +151,8 @@ DOS=HIGH,UMB
 FILES=40`
 
 // profile (profile.json) is optional: the chatbot's server builds the departments without it.
-export function buildFileSystem(departments, profile) {
+// changelog (data/changelog.txt) is optional too: it becomes Changelog.txt on the desktop.
+export function buildFileSystem(departments, profile, changelog) {
   const folders = departments.map(departmentFolder)
   const blocks = profile ? buildResume(profile, departments) : []
   const resume = { type: 'document', id: 'resume', name: 'Resume.doc', icon: 'wordpad', kind: 'WordPad Document', blocks, text: resumeText(blocks) }
@@ -272,6 +273,7 @@ export function buildFileSystem(departments, profile) {
       { ...programs.minesweeper, id: 'desktop/minesweeper', shortcut: true },
       { ...programs.chat, id: 'desktop/askjulian', shortcut: true },
       { ...programs.dos, id: 'desktop/dos', shortcut: true },
+      ...(changelog ? [{ type: 'file', id: 'desktop/changelog', name: 'Changelog.txt', path: 'Changelog.txt', icon: 'text', text: changelog.trim() }] : []),
       projects,
     ],
     programs,

@@ -3,6 +3,7 @@ import '@fontsource/vt323/400.css'
 import './win95.css'
 import departmentsData from '../data/departments.json'
 import profile from '../data/profile.json'
+import changelog from '../data/changelog.txt?raw'
 import { APPS, iconOf, titleOf } from './apps/index.js'
 import DesktopIcons from './components/DesktopIcons.jsx'
 import { ContextMenu } from './components/MenuBar.jsx'
@@ -99,7 +100,7 @@ function manage(state, action) {
 // after the start-up screen), boots, and after Start → Shut Down ends black again and calls
 // onShutDown so the portfolio can play its way back.
 export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDown }) {
-  const fs = useMemo(() => buildFileSystem(departmentsData.departments, profile), [])
+  const fs = useMemo(() => buildFileSystem(departmentsData.departments, profile, changelog), [])
   const [stage, setStage] = useState('black')
   const [wm, dispatch] = useReducer(manage, NO_WINDOWS)
   const [selected, setSelected] = useState(null)

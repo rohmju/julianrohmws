@@ -26,6 +26,7 @@ Open the **MS-DOS Prompt** on the Windows 95 desktop and type:
 |---|---|
 | `bazukimode` | Swaps the Minesweeper bombs for faces. Type it again to turn it off. |
 | `simonmail` | Arms the Dial-Up Networking: type `Simon` as your name and Foxy jumps out. Type it again to turn it off. |
+| `nodelete` | Makes deleting anything open NOPE.GIF. Type it again to turn it off. |
 
 ##  Run it locally
 
@@ -34,13 +35,6 @@ npm install
 npm run dev
 ```
 
-For the chatbot, put a Gemini key in `.env.local`:
-
-```
-GEMINI_API_KEY=your-key-from-aistudio.google.com
-```
-
-The Vite dev server also serves `api/chat.js`, so you don't need the Vercel CLI.
 
 ## Stack
 

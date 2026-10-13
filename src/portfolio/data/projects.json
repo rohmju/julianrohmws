@@ -13,8 +13,8 @@
       "id": "fps-chess",
       "title": "FPS Chess",
       "image": "",
-      "description": "",
-      "techStack": [],
+      "description": "A browser-based multiplayer clone of \"FPS Chess\". You play turn-based chess, and every capture starts a real-time first-person shooter duel between the two pieces in a 3D arena. The server simulates the duel (30 Hz, with hit registration and lag compensation) and active combat lasts 90 seconds. The winner takes the square; if time runs out, the defender wins. The game is won by killing the king, not by checkmate. Each of the 6 chess pieces has its own weapons, abilities and movement (e.g. the Knight has a katana with combos, a sword throw/dash, sword surfing and a \"Blood Blade\"; the Queen has a plasma barrage, levitation and a bomb throw). Architecture: an authoritative Node.js WebSocket server runs a state machine (chess, transition, FPS duel, resolution), and the client uses client-side prediction for the player and entity interpolation for the opponent. Shared deterministic game logic and protocol live in a common package. Features: online matchmaking, an AI opponent, rematch, resign, auto-reconnect with a 15 s grace period, a training simulator with guided drills, graphics quality tiers, an F3 performance overlay, and settings for sensitivity, FOV and audio. Player skins are 3D scans (.glb). Includes typecheck, smoke, polish, performance and animation tests. MIT licensed.",
+      "techStack": ["TypeScript", "Three.js", "Vite", "Theatre.js", "Node.js", "WebSockets (ws)", "npm workspaces"],
       "link": { "label": "Visit project", "url": "" }
     },
     {

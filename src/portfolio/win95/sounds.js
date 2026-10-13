@@ -11,6 +11,14 @@ export function playStartup() {
   return () => audio.pause()
 }
 
+const ERROR = `${import.meta.env.BASE_URL}sounds/erro.mp3`
+
+export function playError() {
+  const audio = new Audio(ERROR)
+  audio.volume = 0.6
+  audio.play().catch(() => {})
+}
+
 // Touch-tone pairs (Hz) for the digits the modem dials.
 const DTMF = {
   1: [697, 1209], 2: [697, 1336], 3: [697, 1477],

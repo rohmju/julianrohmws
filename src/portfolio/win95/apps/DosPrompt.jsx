@@ -99,6 +99,12 @@ export default function DosPrompt({ win }) {
         api.share('simonmail', on || null)
         return [on ? 'Simonmail enabled.' : 'Simonmail disabled.']
       }
+      case 'nodelete': {
+        // Toggles the NOPE.GIF that pops up when something is deleted.
+        const on = !api.peek('nodelete')
+        api.share('nodelete', on || null)
+        return [on ? 'Nodelete enabled.' : 'Nodelete disabled.']
+      }
       case 'exit':
         api.close(win.id)
         return null

@@ -162,6 +162,7 @@ export function buildFileSystem(departments, profile) {
     browser: { type: 'app', id: 'app/iexplore', name: 'Internet Explorer', icon: 'ie', app: 'browser' },
     chat: { type: 'app', id: 'app/askjulian', name: 'Ask Julian', icon: 'chat', app: 'chat' },
     dialup: { type: 'app', id: 'app/dialup', name: 'Contact Julian', icon: 'dialup', app: 'dialup' },
+    dos: { type: 'app', id: 'app/dos', name: 'MS-DOS Prompt', icon: 'dos', app: 'dos' },
     find: { type: 'app', id: 'app/find', name: 'Find', icon: 'find', app: 'find' },
   }
   const projects = { type: 'folder', id: 'projects', name: 'Projects', icon: 'folder', children: PROJECTS.map(projectFolder) }
@@ -270,6 +271,7 @@ export function buildFileSystem(departments, profile) {
       { ...programs.dialup, id: 'desktop/contact', shortcut: true },
       { ...programs.minesweeper, id: 'desktop/minesweeper', shortcut: true },
       { ...programs.chat, id: 'desktop/askjulian', shortcut: true },
+      { ...programs.dos, id: 'desktop/dos', shortcut: true },
       projects,
     ],
     programs,

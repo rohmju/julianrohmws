@@ -15,7 +15,7 @@ import { cursorVariables } from './cursors.js'
 import { gridSize, layoutIcons, nearestFreeCell } from './desktopGrid.js'
 import { buildFileSystem } from './fileSystem.js'
 import { screenScale, useDesktopScale } from './scale.js'
-import { playStartup } from './sounds.js'
+import { playError, playStartup } from './sounds.js'
 import FoxyJumpscare from '../../components/FoxyJumpscare.jsx'
 
 const TASKBAR_HEIGHT = 28
@@ -177,6 +177,8 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
     const shared = createSharedStore()
     const open =(app, props = {}, { key, maximized } = {}) => {
       const spec = APPS[app]
+      // Error dialogs and NOPE.GIF come with the error sound.
+      if (app === 'nope' || props.icon === 'error') playError()
       const { wm, bounds } = latest.current
       let place = {}
       if (spec.width) {
@@ -267,10 +269,13 @@ export default function Win95({ leaving, reducedMotion, coarsePointer, onShutDow
         text: `Cannot find the file '${command}' (or one of its components). Make sure the path and filename are correct and that all required libraries are available.`,
       })
     }
-    // Nothing can be deleted: every attempt opens another NOPE.GIF, and My Computer takes the
-    // whole computer down with it.
+    // Nothing can be deleted. With "nodelete" on (MS-DOS Prompt) every attempt opens another
+    // NOPE.GIF; otherwise nothing happens. My Computer takes the whole computer down with it.
     const remove = (node) => {
-      if (node?.id !== fs.myComputer.id) return open('nope')
+      if (node?.id !== fs.myComputer.id) {
+        if (shared.peek('nodelete')) return open('nope') // plays the error sound itself
+        return playError()
+      }
       setStart(null)
       setContext(null)
       setShutDownOpen(false)
